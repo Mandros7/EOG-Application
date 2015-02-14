@@ -14,6 +14,7 @@ MusicDialog::MusicDialog(QWidget *parent) :
     connect(&mediaPlayer, SIGNAL(durationChanged(qint64)), this, SLOT(updateProgressBar(qint64)));
     ui->timeBar->setValue(0);
     connect(&mediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)),this, SLOT(updatePlayPauseButton(QMediaPlayer::State)));
+    connect(ui->quitButton, SIGNAL(clicked()),parent,SLOT(playerClosed()));
     setIcons();
     openDir();
 }
@@ -98,6 +99,8 @@ void MusicDialog::updateProgressBar(qint64 duration)
 {
     ui->timeBar->setRange(0, duration);
     ui->timeBar->setEnabled(duration > 0);
+    QTime totalDuration(0,mediaPlayer.duration()/60000, qRound((mediaPlayer.duration()%60000)/1000.0),0);
+    ui->totalTimeLabel->setText(totalDuration.toString(tr("/ mm:ss")));
 }
 
 void MusicDialog::updateSongInfo()
@@ -159,4 +162,10 @@ void MusicDialog::on_moreVolumeButton_pressed()
 void MusicDialog::on_lessVolumeButton_pressed()
 {
     ui->volumeBar->setValue(ui->volumeBar->value()-5);
+}
+
+void MusicDialog::on_quitButton_clicked()
+{
+    emit dialogClosed();
+    this->~MusicDialog();
 }

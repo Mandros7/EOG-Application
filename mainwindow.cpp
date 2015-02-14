@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    musicPlayerRunning = false;
 }
 
 MainWindow::~MainWindow()
@@ -16,8 +17,18 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_musicButton_clicked()
 {
-    MusicDialog mDialog;
-    mDialog.setModal(true);
-    mDialog.exec();
+    if (musicPlayerRunning){
+        mDialog->show();
+    }
+    else{
+        mDialog = new MusicDialog(this);
+        musicPlayerRunning = true;
+        connect(mDialog,SIGNAL(dialogClosed()),this,SLOT(playerClosed()));
+        mDialog->show();
+    }
+}
+
+void MainWindow::playerClosed(){
+    musicPlayerRunning = false;
 }
 

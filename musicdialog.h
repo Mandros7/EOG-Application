@@ -20,6 +20,9 @@ public:
     void setFile(const QString& filePath);
     ~MusicDialog();
 
+signals:
+    void dialogClosed();
+
 private slots:
     void on_moreVolumeButton_pressed();
 
@@ -38,6 +41,8 @@ private slots:
     void updateProgressBar(qint64 position);
 
     void updatePlayPauseButton(QMediaPlayer::State state);
+
+    void on_quitButton_clicked();
 
 private:
     void createShortcuts();

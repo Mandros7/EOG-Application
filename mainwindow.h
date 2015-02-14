@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "musicdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,9 +18,12 @@ public:
 
 private slots:
     void on_musicButton_clicked();
+    void playerClosed();
 
 private:
     Ui::MainWindow *ui;
+    MusicDialog *mDialog;
+    bool musicPlayerRunning;
 };
 
 #endif // MAINWINDOW_H
