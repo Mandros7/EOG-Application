@@ -13,6 +13,8 @@ MusicDialog::MusicDialog(QWidget *parent) :
     connect(&mediaPlayer, SIGNAL(positionChanged(qint64)), this, SLOT(updateTimeStamp(qint64)));
     connect(&mediaPlayer, SIGNAL(durationChanged(qint64)), this, SLOT(updateProgressBar(qint64)));
     ui->timeBar->setValue(0);
+    connect(&mediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)),this, SLOT(updatePlayPauseButton(QMediaPlayer::State)));
+    setIcons();
     openDir();
 }
 
@@ -20,12 +22,18 @@ MusicDialog::~MusicDialog()
 {
     delete ui;
 }
-
+void MusicDialog::setIcons(){
+     ui->goBackButton->setIcon(style()->standardIcon(QStyle::SP_MediaSeekBackward));
+     ui->goForwardButton->setIcon(style()->standardIcon(QStyle::SP_MediaSeekForward));
+     ui->playPauseButton->setText("Reproducir");
+     ui->playPauseButton->setIcon(style()->standardIcon((QStyle::SP_MediaPlay)));
+     ui->moreVolumeButton->setIcon(style()->standardIcon(QStyle::SP_MediaVolume));
+     ui->lessVolumeButton->setIcon(style()->standardIcon(QStyle::SP_MediaVolume));
+}
 
 void MusicDialog::openDir()
 {
     const QStringList musicPaths = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
-
 
     const QString dirPath =
                 QFileDialog::getExistingDirectory(this,
@@ -47,16 +55,6 @@ void MusicDialog::setFile(const QString &filePath)
     mediaPlayer.setMedia(QUrl::fromLocalFile(filePath));
 }
 
-void MusicDialog::on_moreVolumeButton_pressed()
-{
-    ui->volumeBar->setValue(ui->volumeBar->value()+5);
-}
-
-void MusicDialog::on_lessVolumeButton_pressed()
-{
-    ui->volumeBar->setValue(ui->volumeBar->value()-5);
-}
-
 void MusicDialog::createShortcuts()
 {
 
@@ -74,6 +72,18 @@ void MusicDialog::createShortcuts()
 
     QShortcut *decreaseShortcut = new QShortcut(Qt::Key_Down, this);
     connect(decreaseShortcut, SIGNAL(activated()), this, SLOT(on_lessVolumeButton_pressed()));
+}
+
+
+void MusicDialog::updatePlayPauseButton(QMediaPlayer::State state){
+   if (state == QMediaPlayer::PlayingState) {
+            ui->playPauseButton->setText("Pausar");
+            ui->playPauseButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+        } else {
+            ui->playPauseButton->setText("Reproducir");
+            ui->playPauseButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+        }
+
 }
 
 void MusicDialog::updateTimeStamp(qint64 position)
@@ -140,4 +150,13 @@ void MusicDialog::on_goBackButton_clicked()
         setFile(filesPath.at(currentFile));
         on_playPauseButton_clicked();
     }
+}
+void MusicDialog::on_moreVolumeButton_pressed()
+{
+    ui->volumeBar->setValue(ui->volumeBar->value()+5);
+}
+
+void MusicDialog::on_lessVolumeButton_pressed()
+{
+    ui->volumeBar->setValue(ui->volumeBar->value()-5);
 }

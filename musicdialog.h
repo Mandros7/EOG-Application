@@ -37,8 +37,11 @@ private slots:
 
     void updateProgressBar(qint64 position);
 
+    void updatePlayPauseButton(QMediaPlayer::State state);
+
 private:
     void createShortcuts();
+    void setIcons();
     Ui::MusicDialog *ui;
     QMediaPlayer mediaPlayer;
     QStringList filesPath;
