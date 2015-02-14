@@ -48,6 +48,7 @@ private:
     void createShortcuts();
     void setIcons();
     Ui::MusicDialog *ui;
+    QStringListModel *model;
     QMediaPlayer mediaPlayer;
     QStringList filesPath;
     int currentFile;

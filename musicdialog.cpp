@@ -42,14 +42,21 @@ void MusicDialog::openDir()
         QStringList nameFilter("*.mp3");
         QDir directory(dirPath);
         QStringList mp3Files = directory.entryList(nameFilter);
+        QStringList modelList;
         for (int i = 0; i<mp3Files.size(); i++){
             filesPath.append(directory.filePath(mp3Files.at(i)));
+            modelList << mp3Files.at(i).split(".").at(0);
         }
         if (!mp3Files.empty()){
             currentFile = 0;
         }
-}
+        model = new QStringListModel();
 
+        model->setStringList(modelList);
+        ui->songList->setModel(model);
+        QModelIndex index = model->index(0,currentFile);
+        ui->songList->setCurrentIndex(index);
+}
 void MusicDialog::setFile(const QString &filePath)
 {
     //playButton->setEnabled(true);
@@ -140,6 +147,8 @@ void MusicDialog::on_goForwardButton_clicked()
          setFile(filesPath.at(currentFile));
          on_playPauseButton_clicked();
      }
+     QModelIndex index = model->index(currentFile,0);
+     ui->songList->setCurrentIndex(index);
 }
 
 void MusicDialog::on_goBackButton_clicked()
@@ -153,6 +162,8 @@ void MusicDialog::on_goBackButton_clicked()
         setFile(filesPath.at(currentFile));
         on_playPauseButton_clicked();
     }
+    QModelIndex index = model->index(currentFile,0);
+    ui->songList->setCurrentIndex(index);
 }
 void MusicDialog::on_moreVolumeButton_pressed()
 {
