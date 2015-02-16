@@ -15,7 +15,7 @@ class MusicDialog : public QDialog
 
 
 public:
-    explicit MusicDialog(QWidget *parent = 0);
+    explicit MusicDialog(QString newPath,QWidget *parent = 0);
     void openDir();
     void setFile(const QString& filePath);
     ~MusicDialog();
@@ -44,12 +44,15 @@ private slots:
 
     void on_quitButton_clicked();
 
+    void on_hideButton_clicked();
+
 private:
     void createShortcuts();
     void setIcons();
     Ui::MusicDialog *ui;
     QStringListModel *model;
     QMediaPlayer mediaPlayer;
+    QString pathToMusic;
     QStringList filesPath;
     int currentFile;
 };

@@ -1,7 +1,7 @@
 #include "musicdialog.h"
 #include "ui_musicdialog.h"
 
-MusicDialog::MusicDialog(QWidget *parent) :
+MusicDialog::MusicDialog(QString newPath, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::MusicDialog)
 {
@@ -15,8 +15,10 @@ MusicDialog::MusicDialog(QWidget *parent) :
     ui->timeBar->setValue(0);
     connect(&mediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)),this, SLOT(updatePlayPauseButton(QMediaPlayer::State)));
     connect(ui->quitButton, SIGNAL(clicked()),parent,SLOT(playerClosed()));
+    connect(this,SIGNAL(dialogClosed()),this->parent(),SLOT(playerClosed()));
     setIcons();
-    openDir();
+    pathToMusic = newPath;
+       openDir();
 }
 
 MusicDialog::~MusicDialog()
@@ -34,13 +36,9 @@ void MusicDialog::setIcons(){
 
 void MusicDialog::openDir()
 {
-    const QStringList musicPaths = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
-
-    const QString dirPath =
-                QFileDialog::getExistingDirectory(this,
-                    tr("Open Directory"),musicPaths.isEmpty() ? QDir::homePath() : musicPaths.first());
+        qDebug() << "value is" << pathToMusic;
         QStringList nameFilter("*.mp3");
-        QDir directory(dirPath);
+        QDir directory(pathToMusic);
         QStringList mp3Files = directory.entryList(nameFilter);
         QStringList modelList;
         for (int i = 0; i<mp3Files.size(); i++){
@@ -49,6 +47,10 @@ void MusicDialog::openDir()
         }
         if (!mp3Files.empty()){
             currentFile = 0;
+        }
+        else {
+            modelList << "NO se detectaron archivos mp3";
+            modelList << "Configure el directorio de musica";
         }
         model = new QStringListModel();
 
@@ -179,4 +181,9 @@ void MusicDialog::on_quitButton_clicked()
 {
     emit dialogClosed();
     this->~MusicDialog();
+}
+
+void MusicDialog::on_hideButton_clicked()
+{
+    this->hide();
 }

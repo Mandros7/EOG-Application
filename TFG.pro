@@ -15,10 +15,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    musicdialog.cpp
+    musicdialog.cpp \
+    settingsdialog.cpp
 
 HEADERS  += mainwindow.h \
-    musicdialog.h
+    musicdialog.h \
+    settingsdialog.h
 
 FORMS    += mainwindow.ui \
-    musicdialog.ui
+    musicdialog.ui \
+    settingsdialog.ui
