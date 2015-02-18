@@ -5,26 +5,35 @@ MusicDialog::MusicDialog(QString newPath, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::MusicDialog)
 {
-    createShortcuts();
+    createShortcuts(); //Atajos, para una posible implementación de un clasificador de movimientos
     ui->setupUi(this);
+
     connect(ui->volumeBar, SIGNAL(valueChanged(int)), &mediaPlayer, SLOT(setVolume(int)));
-    ui->volumeBar->setValue(20);
+    ui->volumeBar->setValue(20); //Volumen inicial al 20%
+
+    // Conexión de señales y slots para la información del reproductor
     connect(&mediaPlayer, SIGNAL(metaDataAvailableChanged(bool)), this, SLOT(updateSongInfo()));
     connect(&mediaPlayer, SIGNAL(positionChanged(qint64)), this, SLOT(updateTimeStamp(qint64)));
     connect(&mediaPlayer, SIGNAL(durationChanged(qint64)), this, SLOT(updateProgressBar(qint64)));
     ui->timeBar->setValue(0);
     connect(&mediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)),this, SLOT(updatePlayPauseButton(QMediaPlayer::State)));
-    connect(ui->quitButton, SIGNAL(clicked()),parent,SLOT(playerClosed()));
+
+    // Envio de señal de dialogo cerrado (no en segundo plano)
     connect(this,SIGNAL(dialogClosed()),this->parent(),SLOT(playerClosed()));
+
     setIcons();
     pathToMusic = newPath;
-       openDir();
+    openDir();
 }
 
 MusicDialog::~MusicDialog()
 {
     delete ui;
 }
+
+/* ------------------------------ MÉTODOS PROPIOS ---------------------------------------
+ * ----------------------------------------------------------------------------------------*/
+
 void MusicDialog::setIcons(){
      ui->goBackButton->setIcon(style()->standardIcon(QStyle::SP_MediaSeekBackward));
      ui->goForwardButton->setIcon(style()->standardIcon(QStyle::SP_MediaSeekForward));
@@ -50,7 +59,8 @@ void MusicDialog::openDir()
         }
         else {
             modelList << "NO se detectaron archivos mp3";
-            modelList << "Configure el directorio de musica";
+            disableButtons();
+            //modelList << "Configure el directorio de musica";
         }
         model = new QStringListModel();
 
@@ -59,9 +69,9 @@ void MusicDialog::openDir()
         QModelIndex index = model->index(0,currentFile);
         ui->songList->setCurrentIndex(index);
 }
+
 void MusicDialog::setFile(const QString &filePath)
 {
-    //playButton->setEnabled(true);
     mediaPlayer.setMedia(QUrl::fromLocalFile(filePath));
 }
 
@@ -84,6 +94,14 @@ void MusicDialog::createShortcuts()
     connect(decreaseShortcut, SIGNAL(activated()), this, SLOT(on_lessVolumeButton_pressed()));
 }
 
+void MusicDialog::disableButtons(){
+    ui->playPauseButton->setEnabled(false);
+    ui->goBackButton->setEnabled(false);
+    ui->goForwardButton->setEnabled(false);
+}
+
+/* ------------------------------ SLOTS --------------------------------------------------
+ * ----------------------------------------------------------------------------------------*/
 
 void MusicDialog::updatePlayPauseButton(QMediaPlayer::State state){
    if (state == QMediaPlayer::PlayingState) {
@@ -124,6 +142,9 @@ void MusicDialog::updateSongInfo()
     if (!info.isEmpty())
         ui->songLabel->setText(info.join(tr(" - ")));
 }
+
+/* ------------------------------ REGISTRO DE ACCIONES (QButton) ---------------------------
+ * ----------------------------------------------------------------------------------------*/
 
 void MusicDialog::on_playPauseButton_clicked()
 {

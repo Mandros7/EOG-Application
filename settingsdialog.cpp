@@ -6,16 +6,14 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(this,SIGNAL(setMusicPath(QString)),this->parent(),SLOT(newMusicPath(QString)));
-    //getMusicPath();
 
 }
 
 void SettingsDialog::getMusicPath(){
-
-const QStringList musicPaths = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
-QString dirPath = QFileDialog::getExistingDirectory(this,tr("Open Directory"),musicPaths.isEmpty() ? QDir::homePath() : musicPaths.first());
-qDebug() << "entry is" << dirPath;
-emit setMusicPath(dirPath);
+    const QStringList musicPaths = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
+    QString dirPath = QFileDialog::getExistingDirectory(this,tr("Open Directory"),musicPaths.isEmpty() ? QDir::homePath() : musicPaths.first());
+    qDebug() << "entry is" << dirPath;
+    emit setMusicPath(dirPath);
 
 }
 

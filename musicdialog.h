@@ -49,6 +49,7 @@ private slots:
 private:
     void createShortcuts();
     void setIcons();
+    void disableButtons();
     Ui::MusicDialog *ui;
     QStringListModel *model;
     QMediaPlayer mediaPlayer;

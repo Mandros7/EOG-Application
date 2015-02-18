@@ -16,6 +16,22 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+/*-------------------------------------- SLOTS --------------------------------------------//
+ *
+ *       La ventana de menú principal recibe la siguiente informacion:
+ *           - Reproductor cerrado. Es necesario registrar esta señal para
+ *           saber cuando crear un nuevo dialogo y asi evitar crear dos dialogos concurrentes
+ *           - Nuevo directorio de música. Cuando la ventana de configuración
+ *           envíe una señal de cambio de directorio, la ventana principal (menú) actuará
+ *           como intermediario, emitiendo una señal que cierra el reproductor.
+ *           La proxima vez que se abra utilizará el nuevo directorio (musicPath).
+ */
+void MainWindow::playerClosed(){
+    qDebug() << "closed";
+    musicPlayerRunning = false;
+    disconnect(this,SIGNAL(musicSettingsChanged()),mDialog,SLOT(on_quitButton_clicked()));
+}
+
 void MainWindow::newMusicPath(QString newPath){
     //qDebug() << Q_FUNC_INFO;
     qDebug() << "recieved" << newPath;
@@ -23,6 +39,11 @@ void MainWindow::newMusicPath(QString newPath){
     emit musicSettingsChanged();
 }
 
+/* ------------------------ REGISTRO DE ACCIONES (sobre Qbuttons) ----------------------------
+ *              Se lanzan los dialogos del reproductor de musica y de configuración
+ *              Se conecta la señal de cambio de configuración a la función de cierre
+ *                  del reproductor.
+ */
 void MainWindow::on_musicButton_clicked()
 {
     if (musicPlayerRunning){
@@ -36,17 +57,10 @@ void MainWindow::on_musicButton_clicked()
     }
 }
 
-void MainWindow::playerClosed(){
-    qDebug() << "closed";
-    musicPlayerRunning = false;
-    disconnect(this,SIGNAL(musicSettingsChanged()),mDialog,SLOT(on_quitButton_clicked()));
-}
-
-
 void MainWindow::on_settingsButton_clicked()
 {
         sDialog = new SettingsDialog(this);
-        settingsRunning = true;
+        //settingsRunning = true;
         sDialog->show();
 }
 
