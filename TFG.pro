@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT       += multimedia
+QT       += webkitwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,12 +17,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     musicdialog.cpp \
+    inputdialog.cpp \
     settingsdialog.cpp
 
 HEADERS  += mainwindow.h \
     musicdialog.h \
-    settingsdialog.h
+    settingsdialog.h \
+    inputdialog.h
 
 FORMS    += mainwindow.ui \
     musicdialog.ui \
-    settingsdialog.ui
+    settingsdialog.ui \
+    inputdialog.ui

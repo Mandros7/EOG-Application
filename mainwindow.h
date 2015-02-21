@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "musicdialog.h"
 #include "settingsdialog.h"
+#include "inputdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,11 +26,13 @@ private slots:
     void playerClosed();
     void on_settingsButton_clicked();
     void newMusicPath(QString newPath);
+    void on_inputButton_clicked();
 
 private:
     Ui::MainWindow *ui;
     MusicDialog *mDialog;
     SettingsDialog *sDialog;
+    InputDialog *iDialog;
     bool musicPlayerRunning;
     QString musicPath;
 };
