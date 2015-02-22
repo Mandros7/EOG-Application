@@ -20,8 +20,22 @@ private slots:
 
     void on_sendButton_clicked();
 
+    void on_write1Button_clicked();
+
+    void on_write2Button_clicked();
+
+    void on_write3Button_clicked();
+
+    void on_write4Button_clicked();
+
+    void on_confirmButton_clicked();
+
 private:
     void setKeyboard();
+    void setIndex();
+    void setButtonText();
+    void changeIndex(int button);
+    void changeSelection(QStringList &list, int button);
     Ui::InputDialog *ui;
     QStringList listOne;
     QStringList listTwo;
