@@ -7,25 +7,28 @@
 QT       += core gui
 QT       += multimedia
 QT       += webkitwidgets
+QT       += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = TFG
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
         mainwindow.cpp \
     musicdialog.cpp \
     inputdialog.cpp \
-    settingsdialog.cpp
+    settingsdialog.cpp \
+    BluetoothReader.cpp
 
 HEADERS  += mainwindow.h \
     musicdialog.h \
     settingsdialog.h \
-    inputdialog.h
+    inputdialog.h \
+    BluetoothReader.h
 
 FORMS    += mainwindow.ui \
     musicdialog.ui \
     settingsdialog.ui \
-    inputdialog.ui
+    inputdialog.ui \
+    BluetoothReader.ui

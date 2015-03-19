@@ -20,7 +20,9 @@ signals:
     void setMusicPath(QString dirPath);
 
 private slots:
+
     void on_playerSettingsButton_clicked();
+
     void on_pushButton_2_clicked();
 
 private:
