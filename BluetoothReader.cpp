@@ -23,6 +23,8 @@ BluetoothReader::BluetoothReader(QWidget *parent) :
     thread->start();
     connect(thread, SIGNAL(DataSignal(QByteArray)), this, SLOT(newData(QByteArray)));
     connect(thread, SIGNAL(ErrorSignal(QString)),this,SLOT(newError(QString)));
+    connect(thread, SIGNAL(OpenedSignal()),this,SLOT(openedSerialPort()));
+    connect(thread, SIGNAL(ClosedSignal()),this,SLOT(closedSerialPort()));
 
     connect(ui->startButton, SIGNAL(clicked()), this, SLOT(openPort()));
     connect(ui->stopButton, SIGNAL(clicked()), this, SLOT(closePort()));
@@ -30,11 +32,15 @@ BluetoothReader::BluetoothReader(QWidget *parent) :
 }
 
 void BluetoothReader::openPort(){
+    ui->startButton->setEnabled(false);
+    timer->start(1000);
     emit openSignal("COM15");
 }
 
 void BluetoothReader::closePort(){
     emit closeSignal();
+    ui->stopButton->setEnabled(false);
+    ui->startButton->setEnabled(true);
 }
 
 BluetoothReader::~BluetoothReader()
@@ -45,7 +51,7 @@ BluetoothReader::~BluetoothReader()
 
 void BluetoothReader::openedSerialPort()
 {
-    ui->startButton->setEnabled(false);
+    ui->stopButton->setEnabled(true);
 }
 
 void BluetoothReader::closedSerialPort()
