@@ -22,11 +22,25 @@ void BTReaderThread::run()
         emit ErrorSignal("Error al iniciar el puerto serie");
     }
 
-    //Debugging de los signals y slots
+    /*Debugging de los signals y slots
     emit DataBytesSignal(QByteArray::QByteArray("1023 1029\n\r"));
     emit DataBytesSignal(QByteArray::QByteArray("0 1029\n\r"));
     emit DataBytesSignal(QByteArray::QByteArray("1023 0\n\r"));
     emit DataBytesSignal(QByteArray::QByteArray("5 23\n\r"));
+    */
+    QFile file("DataSample_2.txt");
+    if ( file.open(QIODevice::ReadOnly|QIODevice::Text) )
+    {
+        QTextStream stream(&file);
+        QString line = stream.readLine();
+        while (line.length()>0){
+              line.append("\n\r");
+              QByteArray data;
+              data.append(line);
+              emit DataBytesSignal(data);
+              line = stream.readLine();
+        }
+    }
 }
 
 void BTReaderThread::openSerialPort(QString portName)

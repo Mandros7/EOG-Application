@@ -33,8 +33,8 @@ BluetoothReader::BluetoothReader(QWidget *parent) :
     connect(readerThread, SIGNAL(OpenedSignal()),this,SLOT(openedSerialPort()));
     connect(readerThread, SIGNAL(ClosedSignal()),this,SLOT(closedSerialPort()));
 
-    connect(ui->startButton, SIGNAL(clicked()), this, SLOT(openPort()));
-    connect(ui->stopButton, SIGNAL(clicked()), this, SLOT(closePort()));
+    //connect(ui->startButton, SIGNAL(clicked()), this, SLOT(openPort()));
+    //connect(ui->stopButton, SIGNAL(clicked()), this, SLOT(closePort()));
 
 }
 
