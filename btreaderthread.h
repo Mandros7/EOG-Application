@@ -20,13 +20,11 @@ private slots:
 signals:
     void ClosedSignal();
     void OpenedSignal();
+    void DataBytesSignal(QByteArray);
     void ErrorSignal(QString);
-
-    void DataSignal(QByteArray);
 
 private:
     QSerialPort *serial;
-    //Add Buffer
 };
 
 #endif // BTREADERTHREAD_H

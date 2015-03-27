@@ -5,6 +5,7 @@
 #include <QtSerialPort/QSerialPort>
 #include <QTimer>
 #include "btreaderthread.h"
+#include "dataparserthread.h"
 
 namespace Ui {
 class BluetoothReader;
@@ -23,7 +24,7 @@ private slots:
     void closedSerialPort();
     void openPort();
     void closePort();
-    void newData(QByteArray data);
+    void newData(QString data);
     void newError(QString info);
     void update();
 
@@ -38,7 +39,8 @@ private:
     qint32 counter;
     QString dataString;
     QStringList finalDataList;
-    BTReaderThread *thread;
+    BTReaderThread *readerThread;
+    DataParserThread *parserThread;
 };
 
 #endif // MAINWINDOW_H

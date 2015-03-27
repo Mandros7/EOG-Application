@@ -19,12 +19,19 @@ BluetoothReader::BluetoothReader(QWidget *parent) :
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     counter = 0;
 
-    thread = new BTReaderThread(this);
-    thread->start();
-    connect(thread, SIGNAL(DataSignal(QByteArray)), this, SLOT(newData(QByteArray)));
-    connect(thread, SIGNAL(ErrorSignal(QString)),this,SLOT(newError(QString)));
-    connect(thread, SIGNAL(OpenedSignal()),this,SLOT(openedSerialPort()));
-    connect(thread, SIGNAL(ClosedSignal()),this,SLOT(closedSerialPort()));
+    readerThread = new BTReaderThread(this);
+    parserThread = new DataParserThread(this);
+
+    readerThread->start();
+    parserThread->start();
+
+    connect(readerThread,SIGNAL(DataBytesSignal(QByteArray)),parserThread,SLOT(onDataBytes(QByteArray)));
+
+
+    connect(parserThread, SIGNAL(DataSignal(QString)), this, SLOT(newData(QString)));
+    connect(readerThread, SIGNAL(ErrorSignal(QString)),this,SLOT(newError(QString)));
+    connect(readerThread, SIGNAL(OpenedSignal()),this,SLOT(openedSerialPort()));
+    connect(readerThread, SIGNAL(ClosedSignal()),this,SLOT(closedSerialPort()));
 
     connect(ui->startButton, SIGNAL(clicked()), this, SLOT(openPort()));
     connect(ui->stopButton, SIGNAL(clicked()), this, SLOT(closePort()));
@@ -45,8 +52,9 @@ void BluetoothReader::closePort(){
 
 BluetoothReader::~BluetoothReader()
 {
+    delete readerThread;
+    delete parserThread;
     delete ui;
-    delete thread;
 }
 
 void BluetoothReader::openedSerialPort()
@@ -80,15 +88,11 @@ void BluetoothReader::closedSerialPort()
     counter = 0;
 }
 
-void BluetoothReader::newData(QByteArray data)
+void BluetoothReader::newData(QString data)
 {
     ui->textEditData->append(data);
     ui->textEditData->ensureCursorVisible();
-    dataString = dataString + QString::QString(data);
-    QList<QString> dataList = dataString.split("\n\r");
-    dataString = dataList.last();
-    dataList.removeLast();
-    finalDataList.append(dataList);
+    finalDataList.append(data);
     ui->textEdit->clear();
     ui->textEdit->insertPlainText("Numero de muestras: "+QString::number(finalDataList.size())+". Segundos en funcionamiento: "+QString::number(counter));
 }
