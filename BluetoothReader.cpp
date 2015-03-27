@@ -11,53 +11,45 @@ BluetoothReader::BluetoothReader(QWidget *parent) :
     ui(new Ui::BluetoothReader)
 {
     ui->setupUi(this);
-    serial = new QSerialPort(this);
 
     ui->stopButton->setEnabled(false);
     ui->startButton->setEnabled(true);
 
-    connect(ui->startButton, SIGNAL(clicked()), this, SLOT(openSerialPort()));
-    connect(ui->stopButton, SIGNAL(clicked()), this, SLOT(closeSerialPort()));
-
-    connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this,
-            SLOT(handleError(QSerialPort::SerialPortError)));
-    connect(serial, SIGNAL(readyRead()), this, SLOT(readData()));
-
     timer = new QTimer(this);
-        connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     counter = 0;
 
+    thread = new BTReaderThread(this);
+    thread->start();
+    connect(thread, SIGNAL(DataSignal(QByteArray)), this, SLOT(newData(QByteArray)));
+    connect(thread, SIGNAL(ErrorSignal(QString)),this,SLOT(newError(QString)));
+
+    connect(ui->startButton, SIGNAL(clicked()), this, SLOT(openPort()));
+    connect(ui->stopButton, SIGNAL(clicked()), this, SLOT(closePort()));
+
+}
+
+void BluetoothReader::openPort(){
+    emit openSignal("COM15");
+}
+
+void BluetoothReader::closePort(){
+    emit closeSignal();
 }
 
 BluetoothReader::~BluetoothReader()
 {
     delete ui;
+    delete thread;
 }
 
-void BluetoothReader::openSerialPort()
+void BluetoothReader::openedSerialPort()
 {
     ui->startButton->setEnabled(false);
-    serial->setPortName("COM15");
-    serial->setBaudRate(QSerialPort::Baud115200);
-    serial->setDataBits(QSerialPort::Data8);
-    serial->setParity(QSerialPort::NoParity);
-    serial->setStopBits(QSerialPort::OneStop);
-    serial->setFlowControl(QSerialPort::NoFlowControl);
-    if (serial->open(QIODevice::ReadOnly)) {
-            ui->statusBar->showMessage(tr("Connected"));
-            ui->stopButton->setEnabled(true);
-            ui->startButton->setEnabled(false);
-            timer->start(1000);
-    } else {
-        QMessageBox::critical(this, tr("Error"), serial->errorString());
-        ui->startButton->setEnabled(true);
-        ui->statusBar->showMessage(tr("Open error"));
-    }
 }
 
-void BluetoothReader::closeSerialPort()
+void BluetoothReader::closedSerialPort()
 {
-    serial->close();
     ui->statusBar->showMessage(tr("Disconnected"));
     ui->stopButton->setEnabled(false);
     ui->startButton->setEnabled(true);
@@ -68,7 +60,7 @@ void BluetoothReader::closeSerialPort()
           ui->textEdit->ensureCursorVisible();
     }
     ui->textEdit->insertPlainText("\nNumero de muestras: "+QString::number(finalDataList.size())+". Segundos en funcionamiento: "+QString::number(counter));
-    QString filename="DataSample.txt";
+    QString filename="DataSample_Diagonal.txt";
     QFile file( filename );
     if ( file.open(QIODevice::WriteOnly|QIODevice::Text) )
     {
@@ -79,12 +71,11 @@ void BluetoothReader::closeSerialPort()
         }
     }
     ui->textEdit->insertPlainText("\nMuestras guardadas en "+filename);
-
+    counter = 0;
 }
 
-void BluetoothReader::readData()
+void BluetoothReader::newData(QByteArray data)
 {
-    QByteArray data = serial->readLine();
     ui->textEditData->append(data);
     ui->textEditData->ensureCursorVisible();
     dataString = dataString + QString::QString(data);
@@ -96,12 +87,9 @@ void BluetoothReader::readData()
     ui->textEdit->insertPlainText("Numero de muestras: "+QString::number(finalDataList.size())+". Segundos en funcionamiento: "+QString::number(counter));
 }
 
-void BluetoothReader::handleError(QSerialPort::SerialPortError error)
+void BluetoothReader::newError(QString info)
 {
-    if (error == QSerialPort::ResourceError) {
-        QMessageBox::critical(this, tr("Critical Error"), serial->errorString());
-        closeSerialPort();
-    }
+        QMessageBox::critical(this, tr("Error"), info);
 }
 
 void BluetoothReader::update(){

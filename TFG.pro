@@ -19,13 +19,15 @@ SOURCES += main.cpp\
     musicdialog.cpp \
     inputdialog.cpp \
     settingsdialog.cpp \
-    BluetoothReader.cpp
+    BluetoothReader.cpp \
+    btreaderthread.cpp
 
 HEADERS  += mainwindow.h \
     musicdialog.h \
     settingsdialog.h \
     inputdialog.h \
-    BluetoothReader.h
+    BluetoothReader.h \
+    btreaderthread.h
 
 FORMS    += mainwindow.ui \
     musicdialog.ui \
