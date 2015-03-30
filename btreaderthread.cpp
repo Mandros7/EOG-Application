@@ -5,6 +5,7 @@
 BTReaderThread::BTReaderThread(QObject *parent) : QThread (parent)
 {    
     serial = new QSerialPort(this);
+    sleeptime = 33;
 }
 
 void BTReaderThread::run()
@@ -39,7 +40,7 @@ void BTReaderThread::run()
               data.append(line);
               emit DataBytesSignal(data);
               line = stream.readLine();
-              this->msleep(33);
+              this->msleep(sleeptime);
         }
     }
 }

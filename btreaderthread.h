@@ -25,6 +25,7 @@ signals:
 
 private:
     QSerialPort *serial;
+    int sleeptime;
 };
 
 #endif // BTREADERTHREAD_H

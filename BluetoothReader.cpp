@@ -22,20 +22,23 @@ BluetoothReader::BluetoothReader(QWidget *parent) :
     readerThread = new BTReaderThread(this);
     parserThread = new DataParserThread(this);
     treatmentThread = new DataTreatmentThread(this);
+    decisionThread = new DecisionThread(this);
 
 
     connect(readerThread,SIGNAL(DataBytesSignal(QByteArray)),parserThread,SLOT(onDataBytes(QByteArray)));
     connect(parserThread,SIGNAL(ChannelsDataSignal(QStringList)),treatmentThread,SLOT(onChannelsData(QStringList)));
-
+    connect(treatmentThread,SIGNAL(ShowResultsSignal(QStringList)),decisionThread,SLOT(onChannelResults(QStringList)));
 
     connect(parserThread, SIGNAL(ShowDataSignal(QString)), this, SLOT(newData(QString)));
     connect(readerThread, SIGNAL(ShowErrorSignal(QString)),this,SLOT(newError(QString)));
     connect(readerThread, SIGNAL(OpenedSignal()),this,SLOT(openedSerialPort()));
     connect(readerThread, SIGNAL(ClosedSignal()),this,SLOT(closedSerialPort()));
     connect(treatmentThread,SIGNAL(ShowResultsSignal(QStringList)),this,SLOT(newResults(QStringList)));
+    connect(decisionThread,SIGNAL(MovementSignal(QList<int>)),this,SLOT(newMovement(QList<int>)));
 
     parserThread->start();
     treatmentThread->start();
+    decisionThread->start();
     readerThread->start();
 
     //connect(ui->startButton, SIGNAL(clicked()), this, SLOT(openPort()));
@@ -59,6 +62,7 @@ BluetoothReader::~BluetoothReader()
     delete readerThread;
     delete parserThread;
     delete treatmentThread;
+    delete decisionThread;
     delete ui;
 }
 
@@ -116,5 +120,14 @@ void BluetoothReader::update(){
 void BluetoothReader::newResults(QStringList results){
     ui->horizontalLineEdit->setText(results[0]);
     ui->verticalLineEdit->setText(results[1]);
+}
+
+void BluetoothReader::newMovement(QList<int> coord){
+    //qDebug()<<"Moviemiento: horizontal "<<coord[0]<<" vertical "<<coord[1]<<endl;
+    QPoint p = cur->pos();
+    p.setY(p.y()+
+           coord[1]);
+    p.setX(p.x()+coord[0]);
+    cur->setPos(p);
 }
 

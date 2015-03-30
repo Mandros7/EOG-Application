@@ -14,6 +14,10 @@ private slots:
 
 signals:
     void ShowResultsSignal(QStringList);
+
+private:
+    int lowerThreshold;
+    int upperThreshold;
 };
 
 #endif // DATATREATMENTTHREAD_H

@@ -2,6 +2,8 @@
 
 DataTreatmentThread::DataTreatmentThread(QObject *parent) : QThread (parent)
 {
+    upperThreshold = 800;
+    lowerThreshold = 300;
 }
 
 void DataTreatmentThread::run(){
@@ -13,16 +15,16 @@ void DataTreatmentThread::onChannelsData(QStringList channels){
     int horizontal = channels[0].toInt();
     QString VResult="-";
     QString HResult="-";
-    if (vertical>900) {
+    if (vertical>upperThreshold) {
         VResult = "DOWN";
     }
-    if (vertical<200) {
+    if (vertical<lowerThreshold) {
         VResult = "UP";
     }
-    if (horizontal>900){
+    if (horizontal>upperThreshold){
         HResult = "LEFT";
     }
-    if (horizontal<200){
+    if (horizontal<lowerThreshold){
         HResult = "RIGHT";
     }
     QStringList results;

@@ -7,6 +7,7 @@
 #include "btreaderthread.h"
 #include "dataparserthread.h"
 #include "datatreatmentthread.h"
+#include "decisionthread.h"
 
 namespace Ui {
 class BluetoothReader;
@@ -27,6 +28,7 @@ private slots:
     void closePort();
     void newData(QString data);
     void newResults(QStringList results);
+    void newMovement(QList<int> coord);
     void newError(QString info);
     void update();
 
@@ -41,9 +43,11 @@ private:
     qint32 counter;
     QString dataString;
     QStringList finalDataList;
+    QCursor *cur;
     BTReaderThread *readerThread;
     DataParserThread *parserThread;
     DataTreatmentThread *treatmentThread;
+    DecisionThread *decisionThread;
 };
 
 #endif // MAINWINDOW_H
