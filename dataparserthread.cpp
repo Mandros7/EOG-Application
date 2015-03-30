@@ -14,8 +14,9 @@ void DataParserThread::onDataBytes(QByteArray data){
     if (index >= 0){
         QString line = QString(queue.mid(0, index)); //Quitar \n\r
         queue.remove(0, index + 1);
-        emit DataSignal(line);
+        emit ShowDataSignal(line);
         QStringList channels = line.split(" ");
+        emit ChannelsDataSignal(channels);
     }
 
 }

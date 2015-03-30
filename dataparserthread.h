@@ -11,7 +11,8 @@ public:
     void run();
 
 signals:
-    void DataSignal(QString);
+    void ShowDataSignal(QString);
+    void ChannelsDataSignal(QStringList);
 
 private slots:
     void onDataBytes(QByteArray data);

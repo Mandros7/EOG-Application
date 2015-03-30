@@ -21,21 +21,25 @@ BluetoothReader::BluetoothReader(QWidget *parent) :
 
     readerThread = new BTReaderThread(this);
     parserThread = new DataParserThread(this);
+    treatmentThread = new DataTreatmentThread(this);
 
-    readerThread->start();
-    parserThread->start();
 
     connect(readerThread,SIGNAL(DataBytesSignal(QByteArray)),parserThread,SLOT(onDataBytes(QByteArray)));
+    connect(parserThread,SIGNAL(ChannelsDataSignal(QStringList)),treatmentThread,SLOT(onChannelsData(QStringList)));
 
 
-    connect(parserThread, SIGNAL(DataSignal(QString)), this, SLOT(newData(QString)));
-    connect(readerThread, SIGNAL(ErrorSignal(QString)),this,SLOT(newError(QString)));
+    connect(parserThread, SIGNAL(ShowDataSignal(QString)), this, SLOT(newData(QString)));
+    connect(readerThread, SIGNAL(ShowErrorSignal(QString)),this,SLOT(newError(QString)));
     connect(readerThread, SIGNAL(OpenedSignal()),this,SLOT(openedSerialPort()));
     connect(readerThread, SIGNAL(ClosedSignal()),this,SLOT(closedSerialPort()));
+    connect(treatmentThread,SIGNAL(ShowResultsSignal(QStringList)),this,SLOT(newResults(QStringList)));
+
+    parserThread->start();
+    treatmentThread->start();
+    readerThread->start();
 
     //connect(ui->startButton, SIGNAL(clicked()), this, SLOT(openPort()));
     //connect(ui->stopButton, SIGNAL(clicked()), this, SLOT(closePort()));
-
 }
 
 void BluetoothReader::openPort(){
@@ -54,6 +58,7 @@ BluetoothReader::~BluetoothReader()
 {
     delete readerThread;
     delete parserThread;
+    delete treatmentThread;
     delete ui;
 }
 
@@ -106,5 +111,10 @@ void BluetoothReader::update(){
     counter++;
     ui->textEdit->clear();
     ui->textEdit->insertPlainText("Numero de muestras: "+QString::number(finalDataList.size())+". Segundos en funcionamiento: "+QString::number(counter));
+}
+
+void BluetoothReader::newResults(QStringList results){
+    ui->horizontalLineEdit->setText(results[0]);
+    ui->verticalLineEdit->setText(results[1]);
 }
 

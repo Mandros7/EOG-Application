@@ -21,7 +21,7 @@ signals:
     void ClosedSignal();
     void OpenedSignal();
     void DataBytesSignal(QByteArray);
-    void ErrorSignal(QString);
+    void ShowErrorSignal(QString);
 
 private:
     QSerialPort *serial;

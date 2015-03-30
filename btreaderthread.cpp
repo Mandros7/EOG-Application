@@ -19,7 +19,7 @@ void BTReaderThread::run()
     qDebug()<<"Reader Thread ready"<<endl;
     }
     else {
-        emit ErrorSignal("Error al iniciar el puerto serie");
+        emit ShowErrorSignal("Error al iniciar el puerto serie");
     }
 
     /*Debugging de los signals y slots
@@ -39,6 +39,7 @@ void BTReaderThread::run()
               data.append(line);
               emit DataBytesSignal(data);
               line = stream.readLine();
+              this->msleep(33);
         }
     }
 }
@@ -54,7 +55,7 @@ void BTReaderThread::openSerialPort(QString portName)
     if (serial->open(QIODevice::ReadOnly)) {
         emit OpenedSignal();
     } else {
-        emit ErrorSignal(serial->errorString());
+        emit ShowErrorSignal(serial->errorString());
     }
 }
 
@@ -74,6 +75,6 @@ void BTReaderThread::handleError(QSerialPort::SerialPortError error)
 {
     if (error == QSerialPort::ResourceError) {
         closeSerialPort();
-        emit ErrorSignal(serial->errorString());
+        emit ShowErrorSignal(serial->errorString());
     }
 }
