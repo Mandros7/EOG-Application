@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     btreaderthread.cpp \
     dataparserthread.cpp \
     datatreatmentthread.cpp \
-    decisionthread.cpp
+    decisionthread.cpp \
+    bluetoothwidget.cpp
 
 HEADERS  += mainwindow.h \
     musicdialog.h \
@@ -33,10 +34,12 @@ HEADERS  += mainwindow.h \
     btreaderthread.h \
     dataparserthread.h \
     datatreatmentthread.h \
-    decisionthread.h
+    decisionthread.h \
+    bluetoothwidget.h
 
 FORMS    += mainwindow.ui \
     musicdialog.ui \
     settingsdialog.ui \
     inputdialog.ui \
-    BluetoothReader.ui
+    BluetoothReader.ui \
+    bluetoothwidget.ui

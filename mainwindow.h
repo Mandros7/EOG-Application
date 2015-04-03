@@ -5,6 +5,7 @@
 #include "musicdialog.h"
 #include "settingsdialog.h"
 #include "inputdialog.h"
+#include "bluetoothwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -27,6 +28,8 @@ private slots:
     void on_settingsButton_clicked();
     void newMusicPath(QString newPath);
     void on_inputButton_clicked();
+    void openBluetooth();
+    void onClosedBTest();
 
 private:
     Ui::MainWindow *ui;
@@ -34,7 +37,9 @@ private:
     SettingsDialog *sDialog;
     InputDialog *iDialog;
     bool musicPlayerRunning;
+    bool bluetoothTestRunning;
     QString musicPath;
+    BluetoothWidget *bWidget;
 };
 
 #endif // MAINWINDOW_H

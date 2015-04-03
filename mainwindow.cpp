@@ -9,6 +9,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     musicPlayerRunning = false;
+    bluetoothTestRunning = false;
+    QSettings settings(QString("configs/config.ini"), QSettings::IniFormat);
+    QString mPath = settings.value("MusicPath").toString();
+    newMusicPath(mPath);
 }
 
 MainWindow::~MainWindow()
@@ -39,6 +43,25 @@ void MainWindow::newMusicPath(QString newPath){
     emit musicSettingsChanged();
 }
 
+void MainWindow::openBluetooth(){
+
+    if (bluetoothTestRunning){
+        bWidget->show();
+    }
+    else{
+        bWidget = new BluetoothWidget();
+        bWidget->setAttribute( Qt::WA_DeleteOnClose );
+        bWidget->show();
+        bluetoothTestRunning = true;
+        connect(bWidget,SIGNAL(closeSignal()),this,SLOT(onClosedBTest()));
+    }
+}
+
+void MainWindow::onClosedBTest(){
+    bluetoothTestRunning = false;
+    disconnect(bWidget,SIGNAL(closeSignal()),this,SLOT(onClosedBTest()));
+}
+
 /* ------------------------ REGISTRO DE ACCIONES (sobre Qbuttons) ----------------------------
  *              Se lanzan los dialogos del reproductor de musica y de configuración
  *              Se conecta la señal de cambio de configuración a la función de cierre
@@ -60,7 +83,7 @@ void MainWindow::on_musicButton_clicked()
 void MainWindow::on_settingsButton_clicked()
 {
         sDialog = new SettingsDialog(this);
-        //settingsRunning = true;
+        //settingsRunning = true;      
         sDialog->show();
 }
 
