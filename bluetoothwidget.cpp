@@ -64,6 +64,7 @@ void BluetoothWidget::closePort(){
 
 BluetoothWidget::~BluetoothWidget()
 {
+    emit widgetClosedSignal();
     delete moveMouse;
     delete readerThread;
     delete parserThread;

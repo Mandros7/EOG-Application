@@ -37,6 +37,7 @@ private slots:
 signals:
     void openSignal(QString portName);
     void closeSignal();
+    void widgetClosedSignal();
 
 private:
     Ui::BluetoothWidget *ui;

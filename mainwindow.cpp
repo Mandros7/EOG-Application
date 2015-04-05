@@ -53,13 +53,13 @@ void MainWindow::openBluetooth(){
         bWidget->setAttribute( Qt::WA_DeleteOnClose );
         bWidget->show();
         bluetoothTestRunning = true;
-        connect(bWidget,SIGNAL(closeSignal()),this,SLOT(onClosedBTest()));
+        connect(bWidget,SIGNAL(widgetClosedSignal()),this,SLOT(onClosedBTest()));
     }
 }
 
 void MainWindow::onClosedBTest(){
     bluetoothTestRunning = false;
-    disconnect(bWidget,SIGNAL(closeSignal()),this,SLOT(onClosedBTest()));
+    disconnect(bWidget,SIGNAL(widgetClosedSignal()),this,SLOT(onClosedBTest()));
 }
 
 /* ------------------------ REGISTRO DE ACCIONES (sobre Qbuttons) ----------------------------
