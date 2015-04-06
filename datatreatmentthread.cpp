@@ -25,8 +25,8 @@ void DataTreatmentThread::onChannelsData(QStringList channels){
     }
     file_H.close();
     file_V.close();
-    int vertical = channels[1].toInt();
-    int horizontal = channels[0].toInt();
+    int vertical = channels[1].toDouble();
+    int horizontal = channels[0].toDouble();
     QString VResult="-";
     QString HResult="-";
     if (vertical>upperThreshold) {

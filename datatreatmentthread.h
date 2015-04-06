@@ -16,8 +16,8 @@ signals:
     void ShowResultsSignal(QStringList);
 
 private:
-    int lowerThreshold;
-    int upperThreshold;
+    double lowerThreshold;
+    double upperThreshold;
 };
 
 #endif // DATATREATMENTTHREAD_H
