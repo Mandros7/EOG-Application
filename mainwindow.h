@@ -22,6 +22,9 @@ public:
 signals:
     void musicSettingsChanged();
 
+    void openSignal(QString portName);
+    void closeSignal();
+
 private slots:
     void on_musicButton_clicked();
     void playerClosed();
@@ -30,6 +33,12 @@ private slots:
     void on_inputButton_clicked();
     void openBluetooth();
     void onClosedBTest();
+
+    void newMovement(QList<int> coord);
+    void mouseMovementControl();
+
+    void openPort();
+    void closePort();
 
 private:
     Ui::MainWindow *ui;
@@ -40,6 +49,14 @@ private:
     bool bluetoothTestRunning;
     QString musicPath;
     BluetoothWidget *bWidget;
+
+    QCursor *cur;
+    BTReaderThread *readerThread;
+    DataParserThread *parserThread;
+    DataTreatmentThread *treatmentThread;
+    DecisionThread *decisionThread;
+    QShortcut *moveMouse;
+    int mouseState;
 };
 
 #endif // MAINWINDOW_H

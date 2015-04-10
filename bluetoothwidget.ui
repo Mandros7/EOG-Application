@@ -133,10 +133,18 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="horizontalLineEdit"/>
+        <widget class="QLineEdit" name="horizontalLineEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="verticalLineEdit"/>
+        <widget class="QLineEdit" name="verticalLineEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

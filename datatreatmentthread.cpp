@@ -2,8 +2,8 @@
 
 DataTreatmentThread::DataTreatmentThread(QObject *parent) : QThread (parent)
 {
-    upperThreshold = 800;
-    lowerThreshold = 300;
+    upperThreshold = 1000;
+    lowerThreshold = 100;
 }
 
 void DataTreatmentThread::run(){
@@ -11,6 +11,7 @@ void DataTreatmentThread::run(){
 }
 
 void DataTreatmentThread::onChannelsData(QStringList channels){
+    /*
     QFile file_H("DataSample_2_horizontal.txt");
     if ( file_H.open(QIODevice::ReadWrite|QIODevice::Text|QIODevice::Append ) )
     {
@@ -25,6 +26,7 @@ void DataTreatmentThread::onChannelsData(QStringList channels){
     }
     file_H.close();
     file_V.close();
+    */
     int vertical = channels[1].toDouble();
     int horizontal = channels[0].toDouble();
     QString VResult="-";

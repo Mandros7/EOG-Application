@@ -29,30 +29,24 @@ private slots:
     void closePort();
     void newData(QString data);
     void newResults(QStringList results);
-    void newMovement(QList<int> coord);
     void newError(QString info);
     void update();
-    void mouseMovementControl();
+
+    void on_shortcut();
 
 signals:
-    void openSignal(QString portName);
-    void closeSignal();
     void widgetClosedSignal();
+    void clickedStart();
+    void clickedStop();
+    void shortcutChange();
 
 private:
     Ui::BluetoothWidget *ui;
-    QSerialPort *serial;
     QTimer *timer;
     qint32 counter;
     QString dataString;
     QStringList finalDataList;
-    QCursor *cur;
-    BTReaderThread *readerThread;
-    DataParserThread *parserThread;
-    DataTreatmentThread *treatmentThread;
-    DecisionThread *decisionThread;
     QShortcut *moveMouse;
-    int mouseState;
 };
 
 #endif // BLUETOOTHWIDGET_H

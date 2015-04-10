@@ -2,7 +2,7 @@
 
 DecisionThread::DecisionThread(QObject *parent) : QThread (parent)
 {
-    units = 2;
+    units = 4;
 }
 
 void DecisionThread::run(){
