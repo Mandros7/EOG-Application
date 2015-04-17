@@ -21,8 +21,7 @@ public:
 
 signals:
     void musicSettingsChanged();
-
-    void openSignal(QString portName);
+    void openSignal();
     void closeSignal();
 
 private slots:

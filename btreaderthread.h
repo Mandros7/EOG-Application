@@ -13,7 +13,7 @@ public:
 
 private slots:
     void readData();
-    void openSerialPort(QString portName);
+    void openSerialPort();
     void closeSerialPort();
     void handleError(QSerialPort::SerialPortError error);
 

@@ -6,6 +6,7 @@ BTReaderThread::BTReaderThread(QObject *parent) : QThread (parent)
 {    
     serial = new QSerialPort(this);
     sleeptime = 33;
+    openSerialPort();
 }
 
 void BTReaderThread::run()
@@ -15,7 +16,7 @@ void BTReaderThread::run()
     connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this,
             SLOT(handleError(QSerialPort::SerialPortError)));
     connect(serial, SIGNAL(readyRead()), this, SLOT(readData()));
-    connect(this->parent(),SIGNAL(openSignal(QString)),this,SLOT(openSerialPort(QString)));
+    connect(this->parent(),SIGNAL(openSignal()),this,SLOT(openSerialPort()));
     connect(this->parent(),SIGNAL(closeSignal()),this,SLOT(closeSerialPort()));
     qDebug()<<"Reader Thread ready"<<endl;
     }
@@ -46,14 +47,33 @@ void BTReaderThread::run()
     file.close();
 }
 
-void BTReaderThread::openSerialPort(QString portName)
+void BTReaderThread::openSerialPort()
 {
-    serial->setPortName(portName);
-    serial->setBaudRate(QSerialPort::Baud115200);
-    serial->setDataBits(QSerialPort::Data8);
-    serial->setParity(QSerialPort::NoParity);
-    serial->setStopBits(QSerialPort::OneStop);
-    serial->setFlowControl(QSerialPort::NoFlowControl);
+    QSettings settings(QString("configs/config.ini"), QSettings::IniFormat);
+    QSettings map(QString("configs/mapper.ini"), QSettings::IniFormat);
+
+    serial->setPortName(settings.value("PortName").toString());
+    qDebug()<<"Port Name: "<<settings.value("PortName").toString()<<endl;
+
+    serial->setBaudRate(settings.value("BaudRate").toInt());
+    qDebug()<<"Baud Rate: "<<settings.value("BaudRate").toString()<<endl;
+
+    serial->setDataBits(QSerialPort::DataBits(
+                            map.value(settings.value("DataBits").toString()).toInt()));
+    qDebug()<<"Data Bits: "<<settings.value("DataBits").toString()<<endl;
+
+    serial->setStopBits(QSerialPort::StopBits(
+                            map.value(settings.value("StopBits").toString()).toInt()));
+    qDebug()<<"Stop Bits : "<<settings.value("StopBits").toString()<<endl;
+
+    serial->setParity(QSerialPort::Parity(
+                          map.value(settings.value("Parity").toString()).toInt()));
+    qDebug()<<"Parity : "<<settings.value("Parity").toString()<<endl;
+
+    serial->setFlowControl(QSerialPort::FlowControl(
+                               map.value(settings.value("FlowControl").toString()).toInt()));
+    qDebug()<<"Flow Control : "<<settings.value("FlowControl").toString()<<endl;
+
     if (serial->open(QIODevice::ReadOnly)) {
         emit OpenedSignal();
     } else {

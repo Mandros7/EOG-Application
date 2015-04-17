@@ -105,7 +105,7 @@ void MainWindow::onClosedBTest(){
 }
 
 void MainWindow::openPort(){
-    emit openSignal("COM15");
+    emit openSignal();
 }
 
 void MainWindow::closePort(){

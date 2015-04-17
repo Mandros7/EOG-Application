@@ -29,7 +29,6 @@ BTSettingsDialog::BTSettingsDialog(QWidget *parent) :
 
     ui->flowComboBox->setCurrentIndex(
                 ui->flowComboBox->findText(settings.value("FlowControl").toString()));
-
     QStringList parity;
     parity << "No" << "Even Parity" << "Odd Parity" << "Space Parity" << "Mark Parity" << "Desconocido";
     ui->parityComboBox->addItems(parity);
