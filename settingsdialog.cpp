@@ -29,7 +29,15 @@ void SettingsDialog::on_playerSettingsButton_clicked()
     getMusicPath();
 }
 
-void SettingsDialog::on_pushButton_2_clicked()
+void SettingsDialog::on_closeButton_clicked()
 {
-    this->~SettingsDialog();
+     this->~SettingsDialog();
 }
+
+void SettingsDialog::on_parametersButton_clicked()
+{
+    btDialog = new BTSettingsDialog();
+    btDialog->show();
+}
+
+
