@@ -37,6 +37,7 @@ void SettingsDialog::on_closeButton_clicked()
 void SettingsDialog::on_parametersButton_clicked()
 {
     btDialog = new BTSettingsDialog();
+    btDialog->setModal(true);
     btDialog->show();
 }
 
