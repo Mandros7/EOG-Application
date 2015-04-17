@@ -77,7 +77,8 @@ void MusicDialog::setFile(const QString &filePath)
 
 void MusicDialog::createShortcuts()
 {
-
+    //Los atajos son punteros cuya memoria asignada se libera automaticamente al liberar la memoria de
+    //la ventana del reproductor (variable UI).
     QShortcut *toggleShortcut = new QShortcut(Qt::Key_Space, this);
     connect(toggleShortcut, SIGNAL(activated()), this, SLOT(on_playPauseButton_clicked()));
 
@@ -104,6 +105,7 @@ void MusicDialog::disableButtons(){
  * ----------------------------------------------------------------------------------------*/
 
 void MusicDialog::updatePlayPauseButton(QMediaPlayer::State state){
+    //En funcion del estado (reproduciendo o no) se muestra un boton u otro.
    if (state == QMediaPlayer::PlayingState) {
             ui->playPauseButton->setText("Pausar");
             ui->playPauseButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
@@ -116,6 +118,7 @@ void MusicDialog::updatePlayPauseButton(QMediaPlayer::State state){
 
 void MusicDialog::updateTimeStamp(qint64 position)
 {
+    //Se reciben los minutos y segundos de canción que ya se han reproducido, se muestran en pantalla.
     ui->timeBar->setValue(position);
 
     QTime duration(0, position / 60000, qRound((position % 60000) / 1000.0));
@@ -132,6 +135,7 @@ void MusicDialog::updateProgressBar(qint64 duration)
 
 void MusicDialog::updateSongInfo()
 {
+    //Se accede a los metadatos de los archivos mp3 y se muestra información
     QStringList info;
     QString author = mediaPlayer.metaData("Author").toString();
     if (!author.isEmpty())
@@ -144,6 +148,9 @@ void MusicDialog::updateSongInfo()
 }
 
 /* ------------------------------ REGISTRO DE ACCIONES (QButton) ---------------------------
+ * Los botones de pausa/play afectan al estado del reproductor
+ * El resto de botones modifican el indice seleccionado dentro de la lista de canciones
+ * Los botones de volumen modifican la barra de volumen, que provoca la ejecucion del slot correspondiente
  * ----------------------------------------------------------------------------------------*/
 
 void MusicDialog::on_playPauseButton_clicked()
@@ -188,6 +195,7 @@ void MusicDialog::on_goBackButton_clicked()
     QModelIndex index = model->index(currentFile,0);
     ui->songList->setCurrentIndex(index);
 }
+
 void MusicDialog::on_moreVolumeButton_pressed()
 {
     ui->volumeBar->setValue(ui->volumeBar->value()+5);
@@ -198,6 +206,8 @@ void MusicDialog::on_lessVolumeButton_pressed()
     ui->volumeBar->setValue(ui->volumeBar->value()-5);
 }
 
+
+//Botones que permiten cerrar o poner en segundo plano el reproductor.
 void MusicDialog::on_quitButton_clicked()
 {
     emit dialogClosed();

@@ -2,34 +2,35 @@
 #include <QtSerialPort/QSerialPort>
 #include <QDebug>
 
+//------------------HILO DE LECTURA POR BLUETOOTH----------------------//
 BTReaderThread::BTReaderThread(QObject *parent) : QThread (parent)
 {    
     serial = new QSerialPort(this);
-    sleeptime = 33;
-    openSerialPort();
+    sleeptime = 33; //Tiempo de simulación entre muestras
 }
 
 void BTReaderThread::run()
 {
     qDebug()<<"Reader Thread running"<<endl;
     if (serial!=NULL){
-    connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this,
-            SLOT(handleError(QSerialPort::SerialPortError)));
-    connect(serial, SIGNAL(readyRead()), this, SLOT(readData()));
-    connect(this->parent(),SIGNAL(openSignal()),this,SLOT(openSerialPort()));
-    connect(this->parent(),SIGNAL(closeSignal()),this,SLOT(closeSerialPort()));
-    qDebug()<<"Reader Thread ready"<<endl;
+        //Conexión a las notificaciones del objeto QSerialPort
+        connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this,
+                SLOT(handleError(QSerialPort::SerialPortError)));
+        connect(serial, SIGNAL(readyRead()), this, SLOT(readData()));
+
+        //Recepcion de señal de apertura de puerto. Conexión sin uso necesario.
+        connect(this->parent(),SIGNAL(openSignal()),this,SLOT(openSerialPort()));
+        connect(this->parent(),SIGNAL(closeSignal()),this,SLOT(closeSerialPort()));
     }
     else {
         emit ShowErrorSignal("Error al iniciar el puerto serie");
     }
 
-    /*Debugging de los signals y slots
-    emit DataBytesSignal(QByteArray::QByteArray("1023 1029\n\r"));
-    emit DataBytesSignal(QByteArray::QByteArray("0 1029\n\r"));
-    emit DataBytesSignal(QByteArray::QByteArray("1023 0\n\r"));
-    emit DataBytesSignal(QByteArray::QByteArray("5 23\n\r"));
-*/
+    /*Sistema de simulación de recepción de datos.
+     * Los datos se leen de un fichero como si se recibiesen y
+     * se introduce un retardo artificial que simula el que
+     * existe entre muestras.
+    */
     QFile file("DataSample_2_T100.txt");
     if ( file.open(QIODevice::ReadOnly|QIODevice::Text) )
     {
@@ -49,6 +50,8 @@ void BTReaderThread::run()
 
 void BTReaderThread::openSerialPort()
 {
+    //Lectura de configuración y traducción de los parámetros para poder pasarlos
+    //al objeto QSerialPort.
     QSettings settings(QString("configs/config.ini"), QSettings::IniFormat);
     QSettings map(QString("configs/mapper.ini"), QSettings::IniFormat);
 
@@ -90,7 +93,7 @@ void BTReaderThread::closeSerialPort()
 void BTReaderThread::readData()
 {
     QByteArray data = serial->readLine();
-    emit DataBytesSignal(data);
+    emit DataBytesSignal(data); //Señal que envia los datos en bytes
 }
 
 void BTReaderThread::handleError(QSerialPort::SerialPortError error)

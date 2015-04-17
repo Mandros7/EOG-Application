@@ -1,5 +1,6 @@
 #include "dataparserthread.h"
 
+//------ HILO DE PREPARACION DE DATOS ----//
 DataParserThread::DataParserThread(QObject *parent) : QThread (parent)
 {
 }
@@ -8,6 +9,8 @@ void DataParserThread::run(){
     qDebug()<<"Parser Thread running"<<endl;
 }
 
+//Los bytes se almacenan en un buffer, en el que se espera un salto de linea, se extraen los datos
+// y se envía la nueva línea a la ventana de etado, y ambos canales a la ventana de tratamiento.
 void DataParserThread::onDataBytes(QByteArray data){
     queue+=data;
     int index = queue.indexOf('\n\r', 0);

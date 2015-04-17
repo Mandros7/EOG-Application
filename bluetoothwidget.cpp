@@ -6,6 +6,8 @@
 #include <QFile>
 #include <QTextStream>
 
+//--------------- WIDGET BLUETOOTH --------------//
+//Muestra el estado de la conexión en tiempo real//
 BluetoothWidget::BluetoothWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::BluetoothWidget)
@@ -15,11 +17,12 @@ BluetoothWidget::BluetoothWidget(QWidget *parent) :
     ui->stopButton->setEnabled(false);
     ui->startButton->setEnabled(true);
 
+    //Timer que cuenta los segundos de ejecucion de la ventana
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     counter = 0;
 
-
+    //Atajo de desactivación de movimiento
     moveMouse = new QShortcut(Qt::Key_Escape, this);
     connect(moveMouse, SIGNAL(activated()), this, SLOT(on_shortcut()));
     //connect(ui->startButton, SIGNAL(clicked()), this, SLOT(openPort()));
@@ -52,6 +55,8 @@ void BluetoothWidget::openedSerialPort()
 
 void BluetoothWidget::closedSerialPort()
 {
+    //Al cerrarse el puerto serie, se genera una archivo con todos los datos recibidos y
+    // se indica el numero total de muestras
     ui->stopButton->setEnabled(false);
     ui->startButton->setEnabled(true);
     timer->stop();
@@ -76,6 +81,9 @@ void BluetoothWidget::closedSerialPort()
     counter = 0;
 }
 
+/* FUNCIONES DE RECEPCION DE DATOS DEL ESTADO DE LA CONEXION
+ * Datos, resultados, mensajes de informacion o de actualizacion del timer.
+ * */
 void BluetoothWidget::newData(QString data)
 {
     ui->textEditData->append(data);

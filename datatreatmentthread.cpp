@@ -1,8 +1,9 @@
 #include "datatreatmentthread.h"
 
+//------ HILO DE TRATAMIENTO DE DATOS ----//
 DataTreatmentThread::DataTreatmentThread(QObject *parent) : QThread (parent)
 {
-    upperThreshold = 1000;
+    upperThreshold = 1000; //Declaracion de umbrales
     lowerThreshold = 100;
 }
 
@@ -10,8 +11,10 @@ void DataTreatmentThread::run(){
     qDebug()<<"Treatment Thread running"<<endl;
 }
 
+
+//Tratamiento simple mediante dos umbrales por canal. El resultado se envía al hilo de decisión
 void DataTreatmentThread::onChannelsData(QStringList channels){
-    /*
+    /*CODIGO DE SEPARACION DE CANALES EN DOS ARCHIVOS
     QFile file_H("DataSample_2_horizontal.txt");
     if ( file_H.open(QIODevice::ReadWrite|QIODevice::Text|QIODevice::Append ) )
     {
