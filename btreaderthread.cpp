@@ -51,6 +51,7 @@ void BTReaderThread::run()
         }
     }
     file.close();
+    //emit FinishSignal();
 }
 
 void BTReaderThread::openSerialPort()

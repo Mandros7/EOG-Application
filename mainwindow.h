@@ -36,8 +36,8 @@ private slots:
     void newMovement(QList<int> coord);
     void mouseMovementControl();
 
-    void dataSentTimeStamp();
-    void saveData();
+    //void dataSentTimeStamp();
+    //void saveData();
 
     void openPort();
     void closePort();
