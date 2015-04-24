@@ -23,6 +23,9 @@ signals:
     void DataBytesSignal(QByteArray);
     void ShowErrorSignal(QString);
 
+    //void SampleReadSignal();
+    //void FinishSignal();
+
 private:
     QSerialPort *serial;
     int sleeptime;

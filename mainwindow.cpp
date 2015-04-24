@@ -183,4 +183,36 @@ void MainWindow::newMovement(QList<int> coord){
            coord[1]);
     p.setX(p.x()+coord[0]);
     cur->setPos(p);
+    /*if (timer.isValid()){
+         processedTimeStamps << timer.nsecsElapsed();
+    }
+    else{
+        processedTimeStamps << -1;
+        timer.start();
+    }
+    */
 }
+/*
+void MainWindow::dataSentTimeStamp(){
+    if (timer.isValid()){
+         receivedTimeStamps << timer.nsecsElapsed();
+    }
+    else{
+        receivedTimeStamps << -1;
+        timer.start();
+    }
+}
+void MainWindow::saveData(){
+    QFile file("delay.txt");
+    if ( file.open(QIODevice::ReadWrite|QIODevice::Text|QIODevice::Append ) )
+    {
+        QTextStream stream(&file);
+        for (int i = 0; i<processedTimeStamps.size();i++){
+            stream <<  receivedTimeStamps.at(i) << "\t" << processedTimeStamps.at(i) << "\t"
+                    << receivedTimeStamps.at(i) - processedTimeStamps.at(i)<< endl;
+        }
+    }
+    file.close();
+    qDebug()<<"FINISHED";
+}
+*/

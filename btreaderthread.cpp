@@ -21,6 +21,9 @@ void BTReaderThread::run()
         //Recepcion de señal de apertura de puerto. Conexión sin uso necesario.
         connect(this->parent(),SIGNAL(openSignal()),this,SLOT(openSerialPort()));
         connect(this->parent(),SIGNAL(closeSignal()),this,SLOT(closeSerialPort()));
+        //Señal de recepcion de muestra, para estudio de retardo
+        //connect(this,SIGNAL(SampleReadSignal()),this->parent(),SLOT(dataSentTimeStamp()));
+        //connect(this,SIGNAL(FinishSignal()),this->parent(),SLOT(saveData()));
     }
     else {
         emit ShowErrorSignal("Error al iniciar el puerto serie");
@@ -37,11 +40,13 @@ void BTReaderThread::run()
         QTextStream stream(&file);
         QString line = stream.readLine();
         while (line.length()>0){
+        //for (int i=0; i<100 ; i++){
               line.append("\n\r");
               QByteArray data;
               data.append(line);
               emit DataBytesSignal(data);
               line = stream.readLine();
+              //emit SampleReadSignal();
               this->msleep(sleeptime);
         }
     }
