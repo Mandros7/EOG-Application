@@ -16,8 +16,13 @@ private slots:
 
 signals:
     void MovementSignal(QList<int>);
+    void BlinkSignal(bool);
 
 private:
+    void checkBlink();
     int units;
+    int blinkCounter = 0;
+    int lowerBlink;
+    int upperBlink;
 };
 #endif // DECISIONTHREAD_H

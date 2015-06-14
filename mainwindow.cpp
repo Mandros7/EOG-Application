@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     /*Conexion final en la que la interfaz recibe las instrucciones de movimiento
     por parte del núcleo funcional del programa */
     connect(decisionThread,SIGNAL(MovementSignal(QList<int>)),this,SLOT(newMovement(QList<int>)));
+    connect(decisionThread,SIGNAL(BlinkSignal(bool)),this,SLOT(newBlink(bool)));
 
     //Se inician los hilos
     parserThread->start();
@@ -101,6 +102,7 @@ void MainWindow::openBluetooth(){
         connect(readerThread, SIGNAL(OpenedSignal()),bWidget,SLOT(openedSerialPort()));
         connect(readerThread, SIGNAL(ClosedSignal()),bWidget,SLOT(closedSerialPort()));
         connect(treatmentThread,SIGNAL(ShowResultsSignal(QStringList)),bWidget,SLOT(newResults(QStringList)));
+        connect(decisionThread,SIGNAL(BlinkSignal(bool)),bWidget,SLOT(newBlink(bool)));
         connect(bWidget, SIGNAL(shortcutChange()), this, SLOT(mouseMovementControl()));
         //connect(bWidget, SIGNAL(clickedStart()), this, SLOT(openPort()));
         //connect(bWidget, SIGNAL(clickedStop()), this, SLOT(closePort()));
@@ -117,6 +119,7 @@ void MainWindow::onClosedBTest(){
     disconnect(readerThread, SIGNAL(OpenedSignal()),bWidget,SLOT(openedSerialPort()));
     disconnect(readerThread, SIGNAL(ClosedSignal()),bWidget,SLOT(closedSerialPort()));
     disconnect(treatmentThread,SIGNAL(ShowResultsSignal(QStringList)),bWidget,SLOT(newResults(QStringList)));
+    disconnect(decisionThread,SIGNAL(BlinkSignal(bool)),bWidget,SLOT(newBlink(bool)));
 }
 //Estas funciones son "deprecated". Su uso no es recomendable, o es innecesario en la mayoria de casos
 void MainWindow::openPort(){
@@ -183,16 +186,22 @@ void MainWindow::newMovement(QList<int> coord){
            coord[1]);
     p.setX(p.x()+coord[0]);
     cur->setPos(p);
-    /*if (timer.isValid()){
+    if (timer.isValid()){
          processedTimeStamps << timer.nsecsElapsed();
     }
     else{
         processedTimeStamps << -1;
         timer.start();
     }
-    */
 }
-/*
+
+void MainWindow::newBlink(bool performed){
+    if (performed){
+        qDebug()<<"Blink processed";
+        //Aqui se realiza el clic de ratón
+    }
+}
+
 void MainWindow::dataSentTimeStamp(){
     if (timer.isValid()){
          receivedTimeStamps << timer.nsecsElapsed();
@@ -203,16 +212,18 @@ void MainWindow::dataSentTimeStamp(){
     }
 }
 void MainWindow::saveData(){
-    QFile file("delay.txt");
+    QFile file("delay_1ms.txt");
     if ( file.open(QIODevice::ReadWrite|QIODevice::Text|QIODevice::Append ) )
     {
         QTextStream stream(&file);
         for (int i = 0; i<processedTimeStamps.size();i++){
             stream <<  receivedTimeStamps.at(i) << "\t" << processedTimeStamps.at(i) << "\t"
-                    << receivedTimeStamps.at(i) - processedTimeStamps.at(i)<< endl;
+                    << processedTimeStamps.at(i)- receivedTimeStamps.at(i) << "\t" <<
+                       processedTimeStamps.at(i+1) - processedTimeStamps.at(i) << "\t" <<
+                       receivedTimeStamps.at(i+1) - receivedTimeStamps.at(i) << endl;
         }
     }
     file.close();
     qDebug()<<"FINISHED";
 }
-*/
+

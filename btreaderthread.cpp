@@ -6,7 +6,8 @@
 BTReaderThread::BTReaderThread(QObject *parent) : QThread (parent)
 {    
     serial = new QSerialPort(this);
-    sleeptime = 33; //Tiempo de simulación entre muestras
+    sleeptime = 33000; //Tiempo de simulación entre muestras
+    openSerialPort();
 }
 
 void BTReaderThread::run()
@@ -14,15 +15,15 @@ void BTReaderThread::run()
     qDebug()<<"Reader Thread running"<<endl;
     if (serial!=NULL){
         //Conexión a las notificaciones del objeto QSerialPort
-        connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this,
-                SLOT(handleError(QSerialPort::SerialPortError)));
+        connect(serial, SIGNAL(error(QSerialPort::SerialPortError)),
+                this,SLOT(handleError(QSerialPort::SerialPortError)));
         connect(serial, SIGNAL(readyRead()), this, SLOT(readData()));
 
         //Recepcion de señal de apertura de puerto. Conexión sin uso necesario.
-        connect(this->parent(),SIGNAL(openSignal()),this,SLOT(openSerialPort()));
-        connect(this->parent(),SIGNAL(closeSignal()),this,SLOT(closeSerialPort()));
+        //connect(this->parent(),SIGNAL(openSignal()),this,SLOT(openSerialPort()));
+        //connect(this->parent(),SIGNAL(closeSignal()),this,SLOT(closeSerialPort()));
+
         //Señal de recepcion de muestra, para estudio de retardo
-        //connect(this,SIGNAL(SampleReadSignal()),this->parent(),SLOT(dataSentTimeStamp()));
         //connect(this,SIGNAL(FinishSignal()),this->parent(),SLOT(saveData()));
     }
     else {
@@ -33,25 +34,31 @@ void BTReaderThread::run()
      * Los datos se leen de un fichero como si se recibiesen y
      * se introduce un retardo artificial que simula el que
      * existe entre muestras.
-    */
+*/
     QFile file("DataSample_2_T100.txt");
+    for (int i = 0; i<1;i++){
     if ( file.open(QIODevice::ReadOnly|QIODevice::Text) )
     {
         QTextStream stream(&file);
         QString line = stream.readLine();
+
         while (line.length()>0){
         //for (int i=0; i<100 ; i++){
-              line.append("\n\r");
-              QByteArray data;
-              data.append(line);
-              emit DataBytesSignal(data);
-              line = stream.readLine();
-              //emit SampleReadSignal();
-              this->msleep(sleeptime);
+                line.append("\n\r");
+                list<<line;
+                line = stream.readLine();
         }
     }
     file.close();
-    //emit FinishSignal();
+    }
+
+    for (int i=0; i<list.size();i++){
+        QByteArray data;
+        data.append(list.at(i));
+        emit DataBytesSignal(data);
+        this->usleep(sleeptime);
+    }
+    emit FinishSignal();
 }
 
 void BTReaderThread::openSerialPort()

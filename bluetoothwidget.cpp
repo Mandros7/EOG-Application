@@ -109,6 +109,15 @@ void BluetoothWidget::newResults(QStringList results){
     ui->verticalLineEdit->setText(results[1]);
 }
 
+void BluetoothWidget::newBlink(bool performed){
+    if(performed){
+        ui->blinkLineEdit->setText("SI");
+    }
+    else{
+         ui->blinkLineEdit->setText("NO");
+    }
+}
+
 void BluetoothWidget::on_shortcut(){
     emit shortcutChange();
 }

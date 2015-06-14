@@ -30,6 +30,7 @@ private slots:
     void newData(QString data);
     void newResults(QStringList results);
     void newError(QString info);
+    void newBlink(bool performed);
     void update();
 
     void on_shortcut();

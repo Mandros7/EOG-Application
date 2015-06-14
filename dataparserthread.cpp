@@ -7,6 +7,7 @@ DataParserThread::DataParserThread(QObject *parent) : QThread (parent)
 
 void DataParserThread::run(){
     qDebug()<<"Parser Thread running"<<endl;
+    //connect(this,SIGNAL(SampleReadSignal()),this->parent(),SLOT(dataSentTimeStamp()));
 }
 
 //Los bytes se almacenan en un buffer, en el que se espera un salto de linea, se extraen los datos
@@ -18,6 +19,7 @@ void DataParserThread::onDataBytes(QByteArray data){
         QString line = QString(queue.mid(0, index)); //Quitar \n\r
         queue.remove(0, index + 1);
         emit ShowDataSignal(line);
+        //emit SampleReadSignal();
         QStringList channels = line.split(" ");
         emit ChannelsDataSignal(channels);
     }

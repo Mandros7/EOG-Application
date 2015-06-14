@@ -13,6 +13,7 @@ public:
 signals:
     void ShowDataSignal(QString);
     void ChannelsDataSignal(QStringList);
+    void SampleReadSignal();
 
 private slots:
     void onDataBytes(QByteArray data);

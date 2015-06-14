@@ -34,10 +34,11 @@ private slots:
     void onClosedBTest();
 
     void newMovement(QList<int> coord);
+    void newBlink(bool);
     void mouseMovementControl();
 
-    //void dataSentTimeStamp();
-    //void saveData();
+    void dataSentTimeStamp();
+    void saveData();
 
     void openPort();
     void closePort();
@@ -52,9 +53,9 @@ private:
     QString musicPath;
     BluetoothWidget *bWidget;
 
-    //QList<int> processedTimeStamps;
-    //QList<int> receivedTimeStamps;
-    //QElapsedTimer timer;
+    QList<int> processedTimeStamps;
+    QList<int> receivedTimeStamps;
+    QElapsedTimer timer;
 
     QCursor *cur;
     BTReaderThread *readerThread;

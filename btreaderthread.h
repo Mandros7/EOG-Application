@@ -13,9 +13,9 @@ public:
 
 private slots:
     void readData();
+    void handleError(QSerialPort::SerialPortError error);
     void openSerialPort();
     void closeSerialPort();
-    void handleError(QSerialPort::SerialPortError error);
 
 signals:
     void ClosedSignal();
@@ -23,12 +23,13 @@ signals:
     void DataBytesSignal(QByteArray);
     void ShowErrorSignal(QString);
 
-    //void SampleReadSignal();
-    //void FinishSignal();
+    void SampleReadSignal();
+    void FinishSignal();
 
 private:
     QSerialPort *serial;
     int sleeptime;
+    QStringList list;
 };
 
 #endif // BTREADERTHREAD_H
