@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtTest/qtest.h>
 #include "musicdialog.h"
 #include "settingsdialog.h"
 #include "inputdialog.h"

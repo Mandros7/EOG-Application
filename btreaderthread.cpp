@@ -59,6 +59,7 @@ void BTReaderThread::run()
         this->usleep(sleeptime);
     }
     emit FinishSignal();
+
 }
 
 void BTReaderThread::openSerialPort()

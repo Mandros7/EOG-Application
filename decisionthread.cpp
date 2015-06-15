@@ -50,4 +50,3 @@ void DecisionThread::checkBlink(){
     }
     blinkCounter = 0;
 }
-

@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    qRegisterMetaType<QList<int> >("QList<int>");
+
     ui->setupUi(this);
     //Variables de estado de las ventanas de música y recepción (configuración)
     musicPlayerRunning = false;
@@ -32,7 +34,6 @@ MainWindow::MainWindow(QWidget *parent) :
     por parte del núcleo funcional del programa */
     connect(decisionThread,SIGNAL(MovementSignal(QList<int>)),this,SLOT(newMovement(QList<int>)));
     connect(decisionThread,SIGNAL(BlinkSignal(bool)),this,SLOT(newBlink(bool)));
-
     //Se inician los hilos
     parserThread->start();
     treatmentThread->start();
@@ -197,8 +198,10 @@ void MainWindow::newMovement(QList<int> coord){
 
 void MainWindow::newBlink(bool performed){
     if (performed){
-        qDebug()<<"Blink processed";
-        //Aqui se realiza el clic de ratón
+        QWidget *p = qApp->widgetAt(cur->pos());
+        if (p){
+            QMetaObject::invokeMethod(p, "clicked");
+        }
     }
 }
 
