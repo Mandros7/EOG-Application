@@ -8,6 +8,7 @@ QT       += core gui
 QT       += multimedia
 QT       += webkitwidgets
 QT       += serialport
+QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,7 +26,8 @@ SOURCES += main.cpp\
     datatreatmentthread.cpp \
     decisionthread.cpp \
     bluetoothwidget.cpp \
-    btsettingsdialog.cpp
+    btsettingsdialog.cpp \
+    smtp.cpp
 
 HEADERS  += mainwindow.h \
     musicdialog.h \
@@ -37,7 +39,8 @@ HEADERS  += mainwindow.h \
     datatreatmentthread.h \
     decisionthread.h \
     bluetoothwidget.h \
-    btsettingsdialog.h
+    btsettingsdialog.h \
+    smtp.h
 
 FORMS    += mainwindow.ui \
     musicdialog.ui \

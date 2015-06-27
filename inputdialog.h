@@ -3,6 +3,7 @@
 
 #include <QDialog>
 
+
 namespace Ui {
 class InputDialog;
 }
@@ -58,8 +59,11 @@ private:
 
     bool mayus;
     QString body;
-    QString su;
+    QString subject;
     QString to;
+    QString link;
+
+    int state;
 };
 
 #endif // INPUTDIALOG_H

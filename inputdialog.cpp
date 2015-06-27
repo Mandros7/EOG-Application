@@ -1,6 +1,7 @@
 #include "inputdialog.h"
 #include "ui_inputdialog.h"
 #include <QDesktopServices>
+#include <smtp.h>
 
 InputDialog::InputDialog(QWidget *parent) :
     QDialog(parent),
@@ -8,6 +9,8 @@ InputDialog::InputDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     mayus = true;
+    state = 0;
+
     setKeyboard();
     setIndex();
 }
@@ -76,17 +79,57 @@ void InputDialog::changeSelection(QStringList &list, int button){
 
 void InputDialog::on_exitButton_clicked()
 {
-    this->~InputDialog();
+    switch(state){
+        case 0:
+            this->~InputDialog();
+            break;
+        case 1:
+            ui->stateLabel->setText("MODO ESCRITURA LIBRE");
+            ui->sendButton->setText("Enviar\ne-mail");
+            ui->exitButton->setText("Salir");
+            break;
+        case 2:
+            ui->stateLabel->setText("ENVIANDO EMAIL. INTRODUCE ASUNTO");
+            break;
+
+    }
+    if (state!=0){
+        state--;
+    }
+
 }
 
 void InputDialog::on_sendButton_clicked()
 {
-    QString body = ui->textField->toPlainText();
-    QString to = "alguien@example.com";
-    QString su = "Asunto";
-    QString link = QString("https://mail.google.com/mail/u/0/?view=cm&fs=1&to=%1&su=%2&body=%3&tf=1").arg(to).arg(su).arg(body);
-    QDesktopServices::openUrl(QUrl(link));
-    //ui->webView->load(QUrl("http://www.google.es"));
+    switch(state){
+        case 0:
+            body = ui->textField->toPlainText();
+            ui->textField->clear();
+            ui->sendButton->setText("OK");
+            ui->exitButton->setText("Atrás");
+            ui->stateLabel->setText("ENVIANDO EMAIL. INTRODUCE ASUNTO");
+            break;
+        case 1:
+            subject = ui->textField->toPlainText();
+            ui->textField->clear();
+            ui->stateLabel->setText("ENVIANDO EMAIL. INTRODUCE DESTINATARIO");
+            break;
+        case 2:
+            to = ui->textField->toPlainText();
+            ui->textField->clear();
+            ui->stateLabel->setText("MODO ESCRITURA LIBRE");
+            //link = QString("https://mail.google.com/mail/u/0/?view=cm&fs=1&to=%1&su=%2&body=%3&tf=1").arg(to).arg(subject).arg(body);
+            //QDesktopServices::openUrl(QUrl(link));
+            Smtp *newMail  = new Smtp("hectorrogue.9@gmail.com",to,subject,body);
+            delete newMail;
+            ui->sendButton->setText("Enviar\ne-mail");
+            ui->exitButton->setText("Salir");
+            break;
+    }
+        state++;
+        if (state>2){
+            state = 0;
+        }
 }
 
 void InputDialog::on_write1Button_clicked()
