@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>747</width>
+    <width>840</width>
     <height>456</height>
    </rect>
   </property>
@@ -14,6 +14,53 @@
    <string>Correo y Teclado</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="stateLabel">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <italic>false</italic>
+         <bold>true</bold>
+         <underline>false</underline>
+         <strikeout>false</strikeout>
+         <kerning>true</kerning>
+        </font>
+       </property>
+       <property name="text">
+        <string>MODO ESCRITURA LIBRE</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="selectedLabel">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <italic>false</italic>
+         <bold>true</bold>
+         <underline>false</underline>
+         <strikeout>false</strikeout>
+         <kerning>true</kerning>
+        </font>
+       </property>
+       <property name="text">
+        <string>Letra seleccionada: </string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -87,8 +134,8 @@ e-mail</string>
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
       <widget class="QPushButton" name="write1Button">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
@@ -102,11 +149,11 @@ e-mail</string>
         </font>
        </property>
        <property name="text">
-        <string>A B C D E F G</string>
+        <string>A B C D</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="QPushButton" name="write2Button">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
@@ -120,29 +167,11 @@ e-mail</string>
         </font>
        </property>
        <property name="text">
-        <string>H I J K L M N</string>
+        <string>I J K L</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QPushButton" name="write3Button">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Ñ O P Q R S T</string>
-       </property>
-      </widget>
-     </item>
-     <item>
+     <item row="0" column="3">
       <widget class="QPushButton" name="write4Button">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
@@ -153,14 +182,16 @@ e-mail</string>
        <property name="font">
         <font>
          <pointsize>14</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
         </font>
        </property>
        <property name="text">
-        <string>U V W X Y Z</string>
+        <string>X Y Z [ ]</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="4">
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <widget class="QPushButton" name="pushButton_5">
@@ -181,25 +212,115 @@ e-mail</string>
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QPushButton" name="confirmButton">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Seleccionar</string>
-         </property>
-        </widget>
-       </item>
       </layout>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="write3Button">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>P Q R S </string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="write5Button">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>E F G H</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4">
+      <widget class="QPushButton" name="confirmButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Seleccionar</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="write6Button">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>M N Ñ O</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="write7Button">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>T U V W</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="mayusButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>MAYUS</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

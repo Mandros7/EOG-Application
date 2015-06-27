@@ -30,6 +30,16 @@ private slots:
 
     void on_confirmButton_clicked();
 
+    void on_write5Button_clicked();
+
+    void on_write6Button_clicked();
+
+    void on_write7Button_clicked();
+
+    void on_mayusButton_clicked();
+
+    void on_pushButton_5_clicked();
+
 private:
     void setKeyboard();
     void setIndex();
@@ -41,8 +51,15 @@ private:
     QStringList listTwo;
     QStringList listThree;
     QStringList listFour;
+    QStringList listFive;
+    QStringList listSix;
+    QStringList listSeven;
     QStringList listIndex;
 
+    bool mayus;
+    QString body;
+    QString su;
+    QString to;
 };
 
 #endif // INPUTDIALOG_H

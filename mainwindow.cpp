@@ -171,10 +171,12 @@ void MainWindow::mouseMovementControl(){
     if(mouseState){
         qDebug()<<"Test1"<<endl;
         disconnect(decisionThread,SIGNAL(MovementSignal(QList<int>)),this,SLOT(newMovement(QList<int>)));
+        disconnect(decisionThread,SIGNAL(BlinkSignal(bool)),this,SLOT(newBlink(bool)));
     }
     else{
         qDebug()<<"Test2"<<endl;
         connect(decisionThread,SIGNAL(MovementSignal(QList<int>)),this,SLOT(newMovement(QList<int>)));
+        connect(decisionThread,SIGNAL(BlinkSignal(bool)),this,SLOT(newBlink(bool)));
     }
     mouseState = 1-mouseState;
     qDebug()<<"Test"<<endl;

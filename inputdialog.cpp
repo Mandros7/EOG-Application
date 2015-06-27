@@ -7,9 +7,9 @@ InputDialog::InputDialog(QWidget *parent) :
     ui(new Ui::InputDialog)
 {
     ui->setupUi(this);
+    mayus = true;
     setKeyboard();
     setIndex();
-
 }
 
 InputDialog::~InputDialog()
@@ -17,14 +17,28 @@ InputDialog::~InputDialog()
     delete ui;
 }
 void InputDialog::setIndex(){
-    listIndex = {"-1","-1","-1","-1"};
+    listIndex = {"-1","-1","-1","-1","-1","-1","-1"};
 }
 
 void InputDialog::setKeyboard(){
-    listOne = {"A","B","C","D","E","F","G"};
-    listTwo = {"H","I","J","K","L","M","N"};
-    listThree = {"Ñ","O","P","Q","R","S","T"};
-    listFour = {"U","V","W","X","Y","Z"};
+    if (mayus){
+        listOne = {"A","B","C","D"};
+        listTwo = {"I","J","K","L"};
+        listThree = {"P","Q","R","S"};
+        listFour = {"X","Y","Z","[ ]"};
+        listFive = {"E","F","G","H"};
+        listSix = {"M","N","Ñ","O"};
+        listSeven = {"T","U","V","W"};
+    }
+    else {
+        listOne = {"a","b","c","d"};
+        listTwo = {"i","j","k","l"};
+        listThree = {"p","q","r","s"};
+        listFour = {"x","y","z","[ ]"};
+        listFive = {"e","f","g","h"};
+        listSix = {"m","n","ñ","o"};
+        listSeven = {"t","u","v","w"};
+    }
 }
 
 void InputDialog::setButtonText(){
@@ -32,15 +46,18 @@ void InputDialog::setButtonText(){
     ui->write2Button->setText(listTwo.join(' '));
     ui->write3Button->setText(listThree.join(' '));
     ui->write4Button->setText(listFour.join(' '));
+    ui->write5Button->setText(listFive.join(' '));
+    ui->write6Button->setText(listSix.join(' '));
+    ui->write7Button->setText(listSeven.join(' '));
 }
 
 void InputDialog::changeIndex(int button){
     int currentIndex = listIndex[button].toInt(0,10);
-    if (((currentIndex >= 6)&&(button<=2))||((currentIndex >= 5)&&(button==3))){
+    if (((currentIndex >= 3)&&(button==3))||((currentIndex >= 4)&&(button!=3))){
         currentIndex = -1;
     }
     setIndex();
-    for (int i = 0; i<4; i++){
+    for (int i = 0; i<listIndex.length(); i++){
         if (i == button){
             listIndex[i] = QString::number(currentIndex+1,10);
         }
@@ -51,8 +68,8 @@ void InputDialog::changeSelection(QStringList &list, int button){
     setKeyboard();
     for (int i = 0; i<list.size();i++){
         if (i == listIndex[button].toInt()){
-            list[i] = "-" + list[i] + "-";
-            //list[i]
+            ui->selectedLabel->setText("Letra seleccionada: "+list[i]);
+            list[i] = "·" + list[i] + "·";
         }
     }
 }
@@ -100,6 +117,27 @@ void InputDialog::on_write4Button_clicked()
     setButtonText();
 }
 
+void InputDialog::on_write5Button_clicked()
+{
+    changeIndex(4);
+    changeSelection(listFive,4);
+    setButtonText();
+}
+
+void InputDialog::on_write6Button_clicked()
+{
+    changeIndex(5);
+    changeSelection(listSix,5);
+    setButtonText();
+}
+
+void InputDialog::on_write7Button_clicked()
+{
+    changeIndex(6);
+    changeSelection(listSeven,6);
+    setButtonText();
+}
+
 void InputDialog::on_confirmButton_clicked()
 {
     setKeyboard();
@@ -116,11 +154,39 @@ void InputDialog::on_confirmButton_clicked()
                 ui->textField->setText(ui->textField->toPlainText()+listThree[listIndex[i].toInt()]);
                 break;
             case 3:
-                ui->textField->setText(ui->textField->toPlainText()+listFour[listIndex[i].toInt()]);
+                if (listFour[listIndex[i].toInt()].contains("[ ]")){
+                    ui->textField->setText(ui->textField->toPlainText()+" ");
+                }
+                else{
+                    ui->textField->setText(ui->textField->toPlainText()+listFour[listIndex[i].toInt()]);
+                }
+                break;
+            case 4:
+                ui->textField->setText(ui->textField->toPlainText()+listFive[listIndex[i].toInt()]);
+                break;
+            case 5:
+                ui->textField->setText(ui->textField->toPlainText()+listSix[listIndex[i].toInt()]);
+                break;
+            case 6:
+                ui->textField->setText(ui->textField->toPlainText()+listSeven[listIndex[i].toInt()]);
                 break;
             default:
                 break;
             }
         }
     }
+}
+
+void InputDialog::on_mayusButton_clicked()
+{
+    mayus = !(mayus);
+    setKeyboard();
+    setButtonText();
+}
+
+void InputDialog::on_pushButton_5_clicked()
+{
+
+    QString text = ui->textField->toPlainText().remove(ui->textField->toPlainText().length()-1,1);
+    ui->textField->setText(text);
 }
