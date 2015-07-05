@@ -305,7 +305,7 @@ e-mail</string>
       </widget>
      </item>
      <item row="1" column="3">
-      <widget class="QPushButton" name="mayusButton">
+      <widget class="QPushButton" name="write8Button">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
          <horstretch>0</horstretch>
@@ -318,7 +318,7 @@ e-mail</string>
         </font>
        </property>
        <property name="text">
-        <string>MAYUS</string>
+        <string>. , ? ! @</string>
        </property>
       </widget>
      </item>

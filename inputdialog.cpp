@@ -20,7 +20,7 @@ InputDialog::~InputDialog()
     delete ui;
 }
 void InputDialog::setIndex(){
-    listIndex = {"-1","-1","-1","-1","-1","-1","-1"};
+    listIndex = {"-1","-1","-1","-1","-1","-1","-1","-1"};
 }
 
 void InputDialog::setKeyboard(){
@@ -32,6 +32,7 @@ void InputDialog::setKeyboard(){
         listFive = {"E","F","G","H"};
         listSix = {"M","N","Ñ","O"};
         listSeven = {"T","U","V","W"};
+        listEight = {".",",","?","!","@"};
     }
     else {
         listOne = {"a","b","c","d"};
@@ -52,11 +53,12 @@ void InputDialog::setButtonText(){
     ui->write5Button->setText(listFive.join(' '));
     ui->write6Button->setText(listSix.join(' '));
     ui->write7Button->setText(listSeven.join(' '));
+    ui->write8Button->setText(listEight.join(' '));
 }
 
 void InputDialog::changeIndex(int button){
     int currentIndex = listIndex[button].toInt(0,10);
-    if (((currentIndex >= 3)&&(button==3))||((currentIndex >= 4)&&(button!=3))){
+    if (((currentIndex >= 5)&&(button==7))||((currentIndex >= 4)&&(button!=7))){
         currentIndex = -1;
     }
     setIndex();
@@ -69,11 +71,17 @@ void InputDialog::changeIndex(int button){
 
 void InputDialog::changeSelection(QStringList &list, int button){
     setKeyboard();
+    bool empty = true;
     for (int i = 0; i<list.size();i++){
         if (i == listIndex[button].toInt()){
             ui->selectedLabel->setText("Letra seleccionada: "+list[i]);
             list[i] = "·" + list[i] + "·";
+            empty = false;
         }
+    }
+
+    if(empty){
+        ui->selectedLabel->setText("Letra seleccionada: Ninguna");
     }
 }
 
@@ -118,10 +126,10 @@ void InputDialog::on_sendButton_clicked()
             to = ui->textField->toPlainText();
             ui->textField->clear();
             ui->stateLabel->setText("MODO ESCRITURA LIBRE");
-            //link = QString("https://mail.google.com/mail/u/0/?view=cm&fs=1&to=%1&su=%2&body=%3&tf=1").arg(to).arg(subject).arg(body);
-            //QDesktopServices::openUrl(QUrl(link));
-            Smtp *newMail  = new Smtp("hectorrogue.9@gmail.com",to,subject,body);
-            delete newMail;
+            link = QString("https://mail.google.com/mail/u/0/?view=cm&fs=1&to=%1&su=%2&body=%3&tf=1").arg(to).arg(subject).arg(body);
+            QDesktopServices::openUrl(QUrl(link));
+            //Smtp *newMail  = new Smtp("hectorrogue.9@gmail.com",to,subject,body);
+            //delete newMail;
             ui->sendButton->setText("Enviar\ne-mail");
             ui->exitButton->setText("Salir");
             break;
@@ -181,6 +189,13 @@ void InputDialog::on_write7Button_clicked()
     setButtonText();
 }
 
+void InputDialog::on_write8Button_clicked()
+{
+    changeIndex(7);
+    changeSelection(listEight,7);
+    setButtonText();
+}
+
 void InputDialog::on_confirmButton_clicked()
 {
     setKeyboard();
@@ -213,18 +228,14 @@ void InputDialog::on_confirmButton_clicked()
             case 6:
                 ui->textField->setText(ui->textField->toPlainText()+listSeven[listIndex[i].toInt()]);
                 break;
+            case 7:
+                ui->textField->setText(ui->textField->toPlainText()+listEight[listIndex[i].toInt()]);
+                break;
             default:
                 break;
             }
         }
     }
-}
-
-void InputDialog::on_mayusButton_clicked()
-{
-    mayus = !(mayus);
-    setKeyboard();
-    setButtonText();
 }
 
 void InputDialog::on_pushButton_5_clicked()
@@ -233,3 +244,5 @@ void InputDialog::on_pushButton_5_clicked()
     QString text = ui->textField->toPlainText().remove(ui->textField->toPlainText().length()-1,1);
     ui->textField->setText(text);
 }
+
+

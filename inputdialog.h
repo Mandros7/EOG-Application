@@ -37,9 +37,9 @@ private slots:
 
     void on_write7Button_clicked();
 
-    void on_mayusButton_clicked();
-
     void on_pushButton_5_clicked();
+
+    void on_write8Button_clicked();
 
 private:
     void setKeyboard();
@@ -55,6 +55,7 @@ private:
     QStringList listFive;
     QStringList listSix;
     QStringList listSeven;
+    QStringList listEight;
     QStringList listIndex;
 
     bool mayus;
