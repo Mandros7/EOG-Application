@@ -15,6 +15,10 @@ Functionalities are divided in several blocks of code, running in different Thre
 - **Decision block**. Decides over identified signals and moves the cursor.
 
 
+License
+-------
+This project is under MIT license as described in the [LICENSE](https://github.com/Mandros7/EOG-Application/blob/master/LICENSE) file.
+
 Authors
 -----------
 Hector Rodriguez Campo
