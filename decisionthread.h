@@ -21,7 +21,7 @@ signals:
 private:
     void checkBlink();
     int units;
-    int blinkCounter = 0;
+    int blinkCounter;
     int lowerBlink;
     int upperBlink;
 };

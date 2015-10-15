@@ -5,7 +5,7 @@
 #include <QtTest/qtest.h>
 #include "musicdialog.h"
 #include "settingsdialog.h"
-#include "inputdialog.h"
+//#include "inputdialog.h"
 #include "bluetoothwidget.h"
 
 namespace Ui {
@@ -30,7 +30,7 @@ private slots:
     void playerClosed();
     void on_settingsButton_clicked();
     void newMusicPath(QString newPath);
-    void on_inputButton_clicked();
+    //void on_inputButton_clicked();
     void openBluetooth();
     void onClosedBTest();
 
@@ -48,7 +48,7 @@ private:
     Ui::MainWindow *ui;
     MusicDialog *mDialog;
     SettingsDialog *sDialog;
-    InputDialog *iDialog;
+    //InputDialog *iDialog;
     bool musicPlayerRunning;
     bool bluetoothTestRunning;
     QString musicPath;

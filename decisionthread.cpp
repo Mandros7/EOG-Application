@@ -3,6 +3,7 @@
 //------ HILO DE PREPARACION DE DATOS ----//
 DecisionThread::DecisionThread(QObject *parent) : QThread (parent)
 {
+    blinkCounter = 0;
     units = 4; //Declaracion de tamaño de salto de cursor
     lowerBlink = 10;
     upperBlink = 35;

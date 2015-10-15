@@ -72,7 +72,7 @@ void BluetoothWidget::closedSerialPort()
     {
         QTextStream stream(&file);
         for (int i = 0; i<finalDataList.size();i++){
-              stream << QString::QString(finalDataList.at(i)) << endl;
+              stream << QString(finalDataList.at(i)) << endl;
               //stream << "\n\r";
         }
     }

@@ -18,34 +18,34 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     musicdialog.cpp \
-    inputdialog.cpp \
+    #inputdialog.cpp \
     settingsdialog.cpp \
-    BluetoothReader.cpp \
+    #BluetoothReader.cpp \
     btreaderthread.cpp \
     dataparserthread.cpp \
     datatreatmentthread.cpp \
     decisionthread.cpp \
     bluetoothwidget.cpp \
     btsettingsdialog.cpp \
-    smtp.cpp
+    #smtp.cpp
 
 HEADERS  += mainwindow.h \
     musicdialog.h \
     settingsdialog.h \
-    inputdialog.h \
-    BluetoothReader.h \
+    #inputdialog.h \
+    #BluetoothReader.h \
     btreaderthread.h \
     dataparserthread.h \
     datatreatmentthread.h \
     decisionthread.h \
     bluetoothwidget.h \
     btsettingsdialog.h \
-    smtp.h
+    #smtp.h
 
 FORMS    += mainwindow.ui \
     musicdialog.ui \
     settingsdialog.ui \
-    inputdialog.ui \
-    BluetoothReader.ui \
+    #inputdialog.ui \
+    #BluetoothReader.ui \
     bluetoothwidget.ui \
     btsettingsdialog.ui

@@ -158,12 +158,13 @@ void MainWindow::on_settingsButton_clicked()
         sDialog->show();
 }
 
-
+/*
 void MainWindow::on_inputButton_clicked()
 {
     iDialog = new InputDialog(this);
     iDialog->show();
 }
+*/
 
 void MainWindow::mouseMovementControl(){
 
