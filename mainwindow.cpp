@@ -8,16 +8,23 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     qRegisterMetaType<QList<int> >("QList<int>");
-
     ui->setupUi(this);
     //Variables de estado de las ventanas de música y recepción (configuración)
     musicPlayerRunning = false;
     bluetoothTestRunning = false;
 
+    //Comprobar existencia de archivo QSettings
+    QFileInfo checkFile("configs/mapper.ini");
+        if (!(checkFile.exists() && checkFile.isFile())) {
+            createDefaultMapper();
+        }
+
+
     //Carga del directorio de música desde archivo de configuración
     QSettings settings(QString("configs/config.ini"), QSettings::IniFormat);
     QString mPath = settings.value("MusicPath").toString();
     newMusicPath(mPath);
+
 
     //Se definen los hilos de lectura, parseo, tratamiento y decision
     readerThread = new BTReaderThread(this);
@@ -34,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     por parte del núcleo funcional del programa */
     connect(decisionThread,SIGNAL(MovementSignal(QList<int>)),this,SLOT(newMovement(QList<int>)));
     connect(decisionThread,SIGNAL(BlinkSignal(bool)),this,SLOT(newBlink(bool)));
+
     //Se inician los hilos
     parserThread->start();
     treatmentThread->start();
@@ -103,6 +111,8 @@ void MainWindow::openBluetooth(){
         connect(readerThread, SIGNAL(OpenedSignal()),bWidget,SLOT(openedSerialPort()));
         connect(readerThread, SIGNAL(ClosedSignal()),bWidget,SLOT(closedSerialPort()));
         connect(treatmentThread,SIGNAL(ShowResultsSignal(QStringList)),bWidget,SLOT(newResults(QStringList)));
+        //connect(decisionThread,SIGNAL(sendSamples(QList<QStringList>)),bWidget,SLOT(printSamples(QList<QStringList>)));
+        connect(decisionThread,SIGNAL(newDecision(QStringList)),bWidget,SLOT(newDecision(QStringList)));
         connect(decisionThread,SIGNAL(BlinkSignal(bool)),bWidget,SLOT(newBlink(bool)));
         connect(bWidget, SIGNAL(shortcutChange()), this, SLOT(mouseMovementControl()));
         //connect(bWidget, SIGNAL(clickedStart()), this, SLOT(openPort()));
@@ -120,6 +130,8 @@ void MainWindow::onClosedBTest(){
     disconnect(readerThread, SIGNAL(OpenedSignal()),bWidget,SLOT(openedSerialPort()));
     disconnect(readerThread, SIGNAL(ClosedSignal()),bWidget,SLOT(closedSerialPort()));
     disconnect(treatmentThread,SIGNAL(ShowResultsSignal(QStringList)),bWidget,SLOT(newResults(QStringList)));
+    //disconnect(decisionThread,SIGNAL(sendSamples(QList<QStringList>)),bWidget,SLOT(printSamples(QList<QStringList>)));
+    disconnect(decisionThread,SIGNAL(newDecision(QStringList)),bWidget,SLOT(newDecision(QStringList)));
     disconnect(decisionThread,SIGNAL(BlinkSignal(bool)),bWidget,SLOT(newBlink(bool)));
 }
 //Estas funciones son "deprecated". Su uso no es recomendable, o es innecesario en la mayoria de casos
@@ -158,13 +170,12 @@ void MainWindow::on_settingsButton_clicked()
         sDialog->show();
 }
 
-/*
 void MainWindow::on_inputButton_clicked()
 {
     iDialog = new InputDialog(this);
     iDialog->show();
 }
-*/
+
 
 void MainWindow::mouseMovementControl(){
 
@@ -233,3 +244,17 @@ void MainWindow::saveData(){
     qDebug()<<"FINISHED";
 }
 
+void MainWindow::createDefaultMapper(){
+    QSettings mapper(QString("configs/mapper.ini"), QSettings::IniFormat);
+    mapper.setValue("No",0);
+    mapper.setValue("Hardware",1);
+    mapper.setValue("Software",2);
+    mapper.setValue("Even",2);
+    mapper.setValue("Odd",3);
+    mapper.setValue("Space",4);
+    mapper.setValue("Mark",5);
+    mapper.setValue("1",1);
+    mapper.setValue("2",2);
+    mapper.setValue("1.5",3);
+    mapper.setValue("Desconocido",-1);
+}

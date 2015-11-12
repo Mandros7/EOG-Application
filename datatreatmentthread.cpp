@@ -5,6 +5,14 @@ DataTreatmentThread::DataTreatmentThread(QObject *parent) : QThread (parent)
 {
     upperThreshold = 1000; //Declaracion de umbrales
     lowerThreshold = 100;
+
+    QSettings settings(QString("configs/config.ini"), QSettings::IniFormat);
+    if (settings.value("Upthreshold").toString().toInt()>0){
+        upperThreshold = settings.value("Upthreshold").toString().toInt();
+    }
+    if (settings.value("Downthreshold").toString().toInt()>0){
+        lowerThreshold = settings.value("Downthreshold").toString().toInt();
+    }
 }
 
 void DataTreatmentThread::run(){

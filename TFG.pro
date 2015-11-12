@@ -18,7 +18,7 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     musicdialog.cpp \
-    #inputdialog.cpp \
+    inputdialog.cpp \
     settingsdialog.cpp \
     #BluetoothReader.cpp \
     btreaderthread.cpp \
@@ -32,7 +32,7 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     musicdialog.h \
     settingsdialog.h \
-    #inputdialog.h \
+    inputdialog.h \
     #BluetoothReader.h \
     btreaderthread.h \
     dataparserthread.h \
@@ -45,7 +45,7 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     musicdialog.ui \
     settingsdialog.ui \
-    #inputdialog.ui \
+    inputdialog.ui \
     #BluetoothReader.ui \
     bluetoothwidget.ui \
     btsettingsdialog.ui

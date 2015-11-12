@@ -15,7 +15,15 @@ BluetoothWidget::BluetoothWidget(QWidget *parent) :
     ui->setupUi(this);
 
     ui->stopButton->setEnabled(false);
-    ui->startButton->setEnabled(true);
+    ui->startButton->setEnabled(false);
+
+    QSettings settings(QString("./configs/config.ini"), QSettings::IniFormat);
+    ui->uThresholdlineEdit->setText(settings.value("Upthreshold").toString());
+    ui->dThresholdlineEdit->setText(settings.value("Downthreshold").toString());
+    ui->speedlineEdit->setText(settings.value("Speed").toString());
+    ui->minBlinklineEdit->setText(settings.value("Minblink").toString());
+    ui->maxBlinklineEdit->setText(settings.value("Maxblink").toString());
+
 
     //Timer que cuenta los segundos de ejecucion de la ventana
     timer = new QTimer(this);
@@ -109,6 +117,11 @@ void BluetoothWidget::newResults(QStringList results){
     ui->verticalLineEdit->setText(results[1]);
 }
 
+void BluetoothWidget::newDecision(QStringList results){
+    ui->hDecisionLineEdit->setText(results[0]);
+    ui->vDecisionLineEdit->setText(results[1]);
+}
+
 void BluetoothWidget::newBlink(bool performed){
     if(performed){
         ui->blinkLineEdit->setText("SI");
@@ -122,5 +135,36 @@ void BluetoothWidget::on_shortcut(){
     emit shortcutChange();
 }
 
+void BluetoothWidget::printSamples(QList<QStringList> samples){
+
+    ui->textEdit->clear();
+    ui->textEdit->insertPlainText("Numero de muestras: "+QString::number(finalDataList.size())+". Segundos en funcionamiento: "+QString::number(counter));
+
+    for (int i = 0;i<samples.length();i++){
+        ui->textEdit->insertPlainText("\n"+(samples[i])[0] + " " +(samples[i])[1]);
+    }
+}
 
 
+
+void BluetoothWidget::on_updatePushButton_clicked()
+{
+    if ((ui->dThresholdlineEdit->text().toInt()>0)&&
+        (ui->uThresholdlineEdit->text().toInt()>ui->dThresholdlineEdit->text().toInt())&&
+            (ui->minBlinklineEdit->text().toInt()>0)&&
+            (ui->maxBlinklineEdit->text().toInt()>ui->minBlinklineEdit->text().toInt())&&
+                (ui->speedlineEdit->text().toInt()>0)){
+
+        QSettings settings(QString("./configs/config.ini"), QSettings::IniFormat);
+        settings.setValue("Upthreshold",ui->uThresholdlineEdit->text().toInt());
+        settings.setValue("Downthreshold",ui->dThresholdlineEdit->text().toInt());
+        settings.setValue("Maxblink",ui->maxBlinklineEdit->text().toInt());
+        settings.setValue("MinBlink",ui->minBlinklineEdit->text().toInt());
+        settings.setValue("Speed",ui->speedlineEdit->text().toInt());
+
+        //ui->textEdit->clear();
+        //ui->textEdit->insertPlainText("Numero de muestras: "+QString::number(finalDataList.size())+". Segundos en funcionamiento: "+QString::number(counter));
+        //ui->textEdit->insertPlainText("\n Configuracion de la aplicacion actualizada!\n");
+    ui->stateLabel->setText("Estado actual: Configuración actualizada (reiniciar)");
+    }
+}

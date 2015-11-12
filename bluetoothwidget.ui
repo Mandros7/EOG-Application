@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>612</width>
-    <height>314</height>
+    <width>653</width>
+    <height>352</height>
    </rect>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -70,6 +70,67 @@
       </widget>
      </item>
      <item>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Minimo parpadeo:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Velocidad puntero:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Umbral inferior:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Maximo parpadeo:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="dThresholdlineEdit"/>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="minBlinklineEdit"/>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="maxBlinklineEdit"/>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="speedlineEdit"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Umbral superior: </string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="uThresholdlineEdit"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QPushButton" name="updatePushButton">
+       <property name="text">
+        <string>Actualizar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="verticalSpacer_2">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -90,26 +151,6 @@
       </widget>
      </item>
      <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="resultsLabel">
-       <property name="text">
-        <string>Resultado</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="Line" name="line_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -118,42 +159,62 @@
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="1" column="0">
+       <item row="2" column="0">
         <widget class="QLabel" name="vChannelLabel">
          <property name="text">
           <string>Canal Vertical:</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
+       <item row="1" column="1">
         <widget class="QLineEdit" name="horizontalLineEdit">
          <property name="readOnly">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="2" column="1">
         <widget class="QLineEdit" name="verticalLineEdit">
          <property name="readOnly">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
+       <item row="1" column="0">
         <widget class="QLabel" name="hChannelLabel">
          <property name="text">
           <string>Canal Horizontal: </string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="QLabel" name="blinkLabel">
          <property name="text">
           <string>Parpadeo:</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="1" column="3">
+        <widget class="QLineEdit" name="hDecisionLineEdit"/>
+       </item>
+       <item row="2" column="3">
+        <widget class="QLineEdit" name="vDecisionLineEdit"/>
+       </item>
+       <item row="0" column="3">
+        <widget class="QLabel" name="labelDecision">
+         <property name="text">
+          <string>Decidido</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="resultsLabel">
+         <property name="text">
+          <string>Resultado</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="3">
         <widget class="QLineEdit" name="blinkLineEdit">
          <property name="text">
           <string/>

@@ -31,7 +31,7 @@ BTSettingsDialog::BTSettingsDialog(QWidget *parent) :
      * desplegable quedará sin ningún parámetro seleccionado.
      *
      * ------------------------------------------------------------------------------ */
-    QSettings settings(QString("configs/config.ini"), QSettings::IniFormat);
+    QSettings settings(QString("./configs/config.ini"), QSettings::IniFormat);
 
     QStringList dataBits;
     dataBits << "5" << "6" << "7" << "8" << "Desconocido";
@@ -52,7 +52,7 @@ BTSettingsDialog::BTSettingsDialog(QWidget *parent) :
                 ui->parityComboBox->findText(settings.value("Parity").toString()));
 
     QStringList stopBits;
-    stopBits << "1" << "2" << "1,5" << "Desconocido";
+    stopBits << "1" << "2" << "1.5" << "Desconocido";
     ui->stopBitsComboBox->addItems(stopBits);
     ui->stopBitsComboBox->setCurrentIndex(
                 ui->stopBitsComboBox->findText(settings.value("StopBits").toString()));
@@ -72,7 +72,7 @@ void BTSettingsDialog::on_nameComboBox_currentIndexChanged(int index)
     for (int i = 0; i<baudRates.size(); i++){
             ui->baudComboBox->addItem(QString::number(baudRates.at(i)));
     }
-    QSettings settings(QString("configs/config.ini"), QSettings::IniFormat);
+    QSettings settings(QString("./configs/config.ini"), QSettings::IniFormat);
 
     int indexBR = ui->baudComboBox->findText(settings.value("BaudRate").toString());
     ui->baudComboBox->setCurrentIndex(indexBR);
@@ -81,11 +81,14 @@ void BTSettingsDialog::on_nameComboBox_currentIndexChanged(int index)
 void BTSettingsDialog::on_buttonBox_accepted()
 {
     //Una vez se acepta, los parámetros se guardan en el archivo de configuración
-    QSettings settings(QString("configs/config.ini"), QSettings::IniFormat);
+    QSettings settings(QString("./configs/config.ini"), QSettings::IniFormat);
 
-    settings.setValue("PortName",ui->nameComboBox->currentText());
-
-    settings.setValue("BaudRate",ui->baudComboBox->currentText());
+    if (ui->nameComboBox->count()>0){
+        settings.setValue("PortName",ui->nameComboBox->currentText());
+    }
+    if (ui->baudComboBox->count()>0){
+        settings.setValue("BaudRate",ui->baudComboBox->currentText());
+    }
 
     settings.setValue("DataBits",ui->dataBitsComboBox->currentText());
 
@@ -94,5 +97,7 @@ void BTSettingsDialog::on_buttonBox_accepted()
     settings.setValue("Parity",ui->parityComboBox->currentText());
 
     settings.setValue("StopBits",ui->stopBitsComboBox->currentText());
+
+    //settings.~QSettings();
 
 }

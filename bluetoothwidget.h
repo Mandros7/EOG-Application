@@ -29,11 +29,15 @@ private slots:
     void closePort();
     void newData(QString data);
     void newResults(QStringList results);
+    void newDecision(QStringList results);
+    void printSamples(QList<QStringList> samples);
     void newError(QString info);
     void newBlink(bool performed);
     void update();
 
     void on_shortcut();
+
+    void on_updatePushButton_clicked();
 
 signals:
     void widgetClosedSignal();

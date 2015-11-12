@@ -22,8 +22,9 @@ void SettingsDialog::getMusicPath(){
     QString dirPath = QFileDialog::getExistingDirectory(this,tr("Open Directory"),musicPaths.isEmpty() ? QDir::homePath() : musicPaths.first());
 
     //Guardar nuevo directorio en configuración
-    QSettings settings(QString("configs/config.ini"), QSettings::IniFormat);
+    QSettings settings(QString("./configs/config.ini"), QSettings::IniFormat);
     settings.setValue("MusicPath",dirPath);
+    //settings.~QSettings();
     emit setMusicPath(dirPath);
 }
 
