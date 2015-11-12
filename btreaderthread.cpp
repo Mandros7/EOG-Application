@@ -34,8 +34,8 @@ void BTReaderThread::run()
      * Los datos se leen de un fichero como si se recibiesen y
      * se introduce un retardo artificial que simula el que
      * existe entre muestras.
-*/
-    QFile file("DataSample_2_T100.txt");
+
+    QFile file("DataSample_2.txt");
     for (int i = 0; i<1;i++){
     if ( file.open(QIODevice::ReadOnly|QIODevice::Text) )
     {
@@ -59,7 +59,7 @@ void BTReaderThread::run()
         this->usleep(sleeptime);
     }
     emit FinishSignal();
-
+*/
 }
 
 void BTReaderThread::openSerialPort()
