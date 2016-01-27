@@ -9,6 +9,7 @@ QT       += multimedia
 QT       += webkitwidgets
 QT       += serialport
 QT       += network
+QT       += testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

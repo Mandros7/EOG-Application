@@ -20,28 +20,29 @@ InputDialog::~InputDialog()
     delete ui;
 }
 void InputDialog::setIndex(){
-    listIndex = {"-1","-1","-1","-1","-1","-1","-1","-1"};
+    listIndex = QStringList() << "-1" << "-1" << "-1" << "-1" << "-1" << "-1" << "-1" << "-1";
 }
 
 void InputDialog::setKeyboard(){
     if (mayus){
-        listOne = {"A","B","C","D"};
-        listTwo = {"I","J","K","L"};
-        listThree = {"P","Q","R","S"};
-        listFour = {"X","Y","Z","[ ]"};
-        listFive = {"E","F","G","H"};
-        listSix = {"M","N","Ñ","O"};
-        listSeven = {"T","U","V","W"};
-        listEight = {".",",","?","!","@"};
+        listOne = QStringList() << "A" << "B" << "C" << "D";
+        listTwo = QStringList() << "I" << "J" << "K" << "L";
+        listThree = QStringList() << "P" << "Q" << "R" << "S";
+        listFour = QStringList() << "X" << "Y" << "Z" << "[ ]";
+        listFive = QStringList() << "E" << "F" << "G" << "H";
+        listSix = QStringList() << "M" << "N" << "Ñ" << "O";
+        listSeven = QStringList() << "T" << "U" << "V" << "W";
+        listEight = QStringList() << "." << "," << "?" << "!" << "@";
     }
     else {
-        listOne = {"a","b","c","d"};
-        listTwo = {"i","j","k","l"};
-        listThree = {"p","q","r","s"};
-        listFour = {"x","y","z","[ ]"};
-        listFive = {"e","f","g","h"};
-        listSix = {"m","n","ñ","o"};
-        listSeven = {"t","u","v","w"};
+        listOne = QStringList() << "a" << "b" << "c" << "d";
+        listTwo = QStringList() << "i" << "j" << "k" << "l";
+        listThree = QStringList() << "p" << "q" << "r" << "s";
+        listFour = QStringList() << "x" << "y" << "z" << "[ ]";
+        listFive = QStringList() << "e" << "f" << "g" << "h";
+        listSix = QStringList() << "m" << "n" << "ñ" << "o";
+        listSeven = QStringList() << "t" << "u" << "v" << "w";
+        listEight = QStringList() << "." << "," << "?" << "!" << "@";
     }
 }
 
